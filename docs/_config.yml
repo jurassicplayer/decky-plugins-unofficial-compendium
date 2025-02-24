@@ -1,3 +1,5 @@
 remote_theme: pages-themes/midnight@v0.2.0
 plugins:
 - jekyll-remote-theme
+
+enable_project_categories: true # enables categorization of projects into multiple categories
