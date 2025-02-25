@@ -15,11 +15,11 @@ jobs:
         with:
           persist-credentials: false
       - name: Hash local store data
-        run: echo "STORE_SHA=$(sha256sum docs/_data/store.json)" >> $GITHUB_ENV
+        run: echo "STORE_SHA=$(sha256sum ./docs/_data/store.json)" >> $GITHUB_ENV
       - name: Poll and hash fresh store data
         run: |
-          curl https://plugins.deckbrew.xyz/plugins > docs/_data/store.json
-          echo "NEW_STORE_SHA=$(sha256sum docs/_data/store.json)" >> $GITHUB_ENV
+          curl https://plugins.deckbrew.xyz/plugins > ./docs/_data/store.json
+          echo "NEW_STORE_SHA=$(sha256sum ./docs/_data/store.json)" >> $GITHUB_ENV
       - name: Compare hashes
         id: compare
         run: |
