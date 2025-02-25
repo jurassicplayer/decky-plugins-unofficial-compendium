@@ -1,12 +1,12 @@
-{% assign store = site.store | where: "name", plugin.title | first %}
+{% assign store = site.data.store | where: "name", plugin.title | first %}
 <div class="col mb-4">
   <a href="{% if plugin.redirect %}{{ plugin.redirect }}{% else %}{{ plugin.url | relative_url }}{% endif %}">
     <div class="card h-100 hoverable">
       <div class="row no-gutters">
         <div class="{% if plugin.img %}col-md-6{% else %}col-md-12{% endif %}">
           <div class="card-body">
-            <h3 class="card-title">{{ plugin.title }}</h3>
-            <p class="card-text">{{ plugin.description }} {{ store.downloads }}</p>
+            <h3 class="card-title">{{ store.name | default: plugin.title }}</h3>
+            <p class="card-text">{{ store.description | default: plugin.description }} {{ store.downloads }}</p>
             <div class="row ml-1 mr-1 p-0">
               {% if plugin.github %}
                 <div class="github-icon">

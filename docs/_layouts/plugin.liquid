@@ -1,22 +1,16 @@
 ---
 layout: page
 ---
-{% assign store = site.store | where: "name", page.title | first %}
-
-<pre>
-    site: {{ site | jsonify | escape }}
-    page: {{ page | jsonify | escape }}
-    store: {{ site.store | jsonify | escape }}
-    layout: {{ layout | jsonify | escape }}
-    content: {{ content | jsonify | escape }}
-    paginator: {{ paginator | jsonify | escape }}
-</pre>
+{% assign store = site.data.store | where: "name", page.title | first %}
 
 <div class="pluginCard">
   {{ page.title }}
   {{ page.package_name }}
   {{ page.project_url }}
   {{ page.category }}
-  {{ page.content }}
   {{ store.downloads }}
+</div>
+
+<div class="customPluginPage">
+  {{ page.content }}
 </div>

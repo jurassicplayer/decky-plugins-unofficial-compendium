@@ -4,5 +4,3 @@ collections:
   plugins:
     output: true
     permalink: /:collection/:title/
-  store:
-    output: false
