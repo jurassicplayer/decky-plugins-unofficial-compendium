@@ -5,4 +5,4 @@ collections:
     output: true
     permalink: /:collection/:title/
   store:
-    output: true
+    output: false
