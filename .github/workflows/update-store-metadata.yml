@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        plugin: ${{ fromJson(needs.configure.outputs.matrix) }}
+        plugin: ${{ fromJson(needs.query_store.outputs.matrix) }}
     steps:
       - name: Check if page exists
         run: echo ${{ matrix.plugin.name }}
