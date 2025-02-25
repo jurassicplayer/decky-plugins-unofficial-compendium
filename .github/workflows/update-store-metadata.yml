@@ -36,5 +36,6 @@ jobs:
           branch: "workflows-update-store"
           commit-message: "chore: update store.json"
           auto-merge: merge
+          labels: automerge
           update-pull-request-title-and-body: true
       
