@@ -128,7 +128,7 @@
         "name": "2.1.2",
         "hash": "1a1e8f4dded8494febe56df16429ef5bba1e5b8feb3fd989d5808fbef0d71350",
         "created": "2024-07-06T11:37:37Z",
-        "downloads": 402073,
+        "downloads": 402075,
         "updates": 49453
       },
       {
@@ -323,7 +323,7 @@
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/CSS%20Loader-521e6e0b59bd89ba3632f15b7a1463cb96127a8a43449d487a4e49b1f1cbafe2.png",
-    "downloads": 887346,
+    "downloads": 887348,
     "updates": 197238,
     "created": "2023-04-06T02:44:54Z",
     "updated": "2024-07-06T11:37:37Z"
@@ -758,7 +758,7 @@
         "name": "1.1.0",
         "hash": "3894048d0d9b35342c85d9f50e9e5e4edc00b65e9dfe61d47ec5cf97bfd28da7",
         "created": "2024-09-12T07:11:13Z",
-        "downloads": 238032,
+        "downloads": 238033,
         "updates": 48952
       },
       {
@@ -841,7 +841,7 @@
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/ProtonDB%20Badges-7cd4cb2cde6c828ea0fef6a2b85f52e057ef2ee59a9e0896feb2a1ffdb55cdff.png",
-    "downloads": 484246,
+    "downloads": 484247,
     "updates": 155556,
     "created": "2023-04-01T16:53:50Z",
     "updated": "2024-09-12T07:11:13Z"
@@ -861,7 +861,7 @@
         "name": "1.6.0",
         "hash": "0c104f697dc99d54601446495964b407d6b61786e0b029117db3a597d63eeb61",
         "created": "2024-10-22T18:42:34Z",
-        "downloads": 77244,
+        "downloads": 77245,
         "updates": 31718
       },
       {
@@ -965,7 +965,7 @@
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/Audio%20Loader.png",
-    "downloads": 206682,
+    "downloads": 206683,
     "updates": 66962,
     "created": "2022-08-22T17:46:47Z",
     "updated": "2024-10-22T18:42:34Z"
@@ -1342,7 +1342,7 @@
         "name": "1.3.2",
         "hash": "f2c62b90ca60d8a80b6d0f75d8027552b1509c7a05842c6f4a24a9072846d133",
         "created": "2025-02-10T21:25:10Z",
-        "downloads": 11641,
+        "downloads": 11644,
         "updates": 65345
       },
       {
@@ -1425,7 +1425,7 @@
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/Animation%20Changer-2f01eb07e607c3ebd99b7e76648bc2486910d33081fa8571a8f18f718727d8bd.png",
-    "downloads": 429683,
+    "downloads": 429686,
     "updates": 104495,
     "created": "2022-10-09T22:46:29Z",
     "updated": "2025-02-10T21:25:10Z"
@@ -1521,7 +1521,7 @@
         "hash": "d9ef0a95bc91c110ed94198464e4968f3eec7e16f6eedab8ed75b4294993a8e9",
         "created": "2025-01-14T19:46:09Z",
         "downloads": 17765,
-        "updates": 43273
+        "updates": 43274
       },
       {
         "name": "1.4.6",
@@ -1646,7 +1646,7 @@
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/HLTB%20for%20Deck-b407060820a5928d859fba7510b21733ebd6b77a1ae6ec47d6b8dba01aa5d4e9.png",
     "downloads": 106318,
-    "updates": 73811,
+    "updates": 73812,
     "created": "2023-04-03T00:22:42Z",
     "updated": "2025-01-14T19:46:09Z"
   },
@@ -1761,8 +1761,8 @@
         "name": "2.0.3",
         "hash": "d9d43e9d0720615d109746a658fbbfd4b0d69e69b7444310e25ad62e415f7980",
         "created": "2024-03-15T19:18:07Z",
-        "downloads": 56866,
-        "updates": 3167
+        "downloads": 56867,
+        "updates": 3168
       },
       {
         "name": "2.0.2-1",
@@ -1802,8 +1802,8 @@
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/Emuchievements-74da08dc81ee8c676be82b77c1fb9e1710f08c09e2979aab1d84a70683c966de.png",
-    "downloads": 71427,
-    "updates": 18140,
+    "downloads": 71428,
+    "updates": 18141,
     "created": "2023-05-15T18:35:46Z",
     "updated": "2024-03-15T19:18:07Z"
   },
@@ -2293,7 +2293,7 @@
         "name": "1.5.1-loaderv2",
         "hash": "b84f0a3f83b6e5d7cbc0ba9360bde33cfb400cf5f2a5d5c38f44a488e2c91a57",
         "created": "2024-09-05T14:49:49Z",
-        "downloads": 337006,
+        "downloads": 337008,
         "updates": 80415
       },
       {
@@ -2314,7 +2314,7 @@
         "name": "1.3.3-1",
         "hash": "0b78bac79bb4aac8279c31dedc96e245d0aed176e9a45e0b359b75ac47135939",
         "created": "2024-01-20T03:59:08Z",
-        "downloads": 78386,
+        "downloads": 78387,
         "updates": 113046
       },
       {
@@ -2418,7 +2418,7 @@
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/SteamGridDB-1a938447c46d3d7816c87181c20b96ca438840cbdbb556c13c37cf1f923b3512.png",
-    "downloads": 889517,
+    "downloads": 889520,
     "updates": 218474,
     "created": "2022-12-18T21:21:19Z",
     "updated": "2024-09-05T14:49:49Z"
@@ -2532,7 +2532,7 @@
         "name": "2.0.2",
         "hash": "9450e54cbf28082d4513838d0dcd42bf04ffc08ae5a6472d0c1f88677782e3ef",
         "created": "2024-11-25T00:53:49Z",
-        "downloads": 22405,
+        "downloads": 22406,
         "updates": 19332
       },
       {
@@ -2601,7 +2601,7 @@
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/Controller%20Tools-4b57995ff4fa5e078263ac3403603afde0302c9c2f7a7741d0fc3429dbc001fd.png",
-    "downloads": 35022,
+    "downloads": 35023,
     "updates": 22495,
     "created": "2023-03-17T04:15:59Z",
     "updated": "2024-11-25T00:53:49Z"
@@ -2901,7 +2901,7 @@
         "name": "1.2.0",
         "hash": "150e77907d8891f577ca9ee267cdf7b962087b815b5ecec9c4997e9f32e0af5e",
         "created": "2024-02-12T20:49:44Z",
-        "downloads": 38663,
+        "downloads": 38664,
         "updates": 6514
       },
       {
@@ -2942,7 +2942,7 @@
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/Quick%20Launch-7c408083451947f5be988e7a1905fd731631c10b248839bb7efb50b6cc0f181c.png",
-    "downloads": 44389,
+    "downloads": 44390,
     "updates": 14784,
     "created": "2023-03-17T23:13:46Z",
     "updated": "2024-02-12T20:49:44Z"
@@ -3052,7 +3052,7 @@
         "hash": "1afa1a6f129c5d419de0e0bf0f6db8d8e50385a5659179346e996031ea372591",
         "created": "2024-10-22T18:43:44Z",
         "downloads": 80697,
-        "updates": 32301
+        "updates": 32302
       },
       {
         "name": "1.3.1",
@@ -3114,7 +3114,7 @@
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/Storage%20Cleaner-9880dcffdd7e9f7db4b7016aec1b6553ffcb1614da3abcb7d608aa1e9d6fb6d6.png",
     "downloads": 245901,
-    "updates": 97930,
+    "updates": 97931,
     "created": "2023-03-27T22:13:58Z",
     "updated": "2024-10-22T18:43:44Z"
   },
@@ -3131,8 +3131,8 @@
         "name": "1.7.0",
         "hash": "2a9fced36b3d34bd4bd4bd7963787b486bf39137f9d444632140ab1fe1872de8",
         "created": "2025-01-14T20:02:58Z",
-        "downloads": 14589,
-        "updates": 29457
+        "downloads": 14591,
+        "updates": 29458
       },
       {
         "name": "1.6.0",
@@ -3179,8 +3179,8 @@
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/Game%20Theme%20Music-dce63e3764f8114afd8e21ae8288bb54c09077d8202baa7dab572b352cb12512.png",
-    "downloads": 209910,
-    "updates": 69397,
+    "downloads": 209912,
+    "updates": 69398,
     "created": "2023-04-08T16:36:48Z",
     "updated": "2025-01-14T20:02:58Z"
   },
@@ -3764,7 +3764,7 @@
         "name": "0.2.1",
         "hash": "49c59574b51d2b694c42e00ab8c52b770f0d2f7aaca95dd9ba2c736e43f0280b",
         "created": "2024-08-25T19:13:06Z",
-        "downloads": 7696,
+        "downloads": 7697,
         "updates": 1313
       },
       {
@@ -3784,7 +3784,7 @@
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/Syncthing-3e29af4598a6ba655f4c69e6f1a4a720f40501ba2667703db66a8c5b00db2eda.png",
-    "downloads": 7723,
+    "downloads": 7724,
     "updates": 1324,
     "created": "2023-08-16T07:53:40Z",
     "updated": "2024-08-25T19:13:06Z"
@@ -4051,7 +4051,7 @@
         "name": "0.0.3",
         "hash": "60152ca9a49b3a7c4fe1ac89a2ccb3bada8c84de2c1869591e6e573165d9dd6d",
         "created": "2024-05-21T13:54:14Z",
-        "downloads": 8608,
+        "downloads": 8609,
         "updates": 447
       },
       {
@@ -4071,7 +4071,7 @@
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/ScreenshotUploader-0edc34053b80433d346e524d3052bc9ce74cc24164c61420ea6bd36fa84b109b.png",
-    "downloads": 14439,
+    "downloads": 14440,
     "updates": 2240,
     "created": "2023-11-14T20:44:12Z",
     "updated": "2024-05-21T13:54:14Z"
@@ -4089,7 +4089,7 @@
         "name": "1.0.2-1",
         "hash": "ff19cac1cab713e7f56bd5b850d5986cef4f2f9933303432e9c66de19868a3ce",
         "created": "2024-01-20T03:59:16Z",
-        "downloads": 283387,
+        "downloads": 283388,
         "updates": 56171
       },
       {
@@ -4102,7 +4102,7 @@
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/EmuDecky-4cbb20adfdb066cb40577bdb80311154bda4b01409cd668d967911bb80fad991.png",
-    "downloads": 306666,
+    "downloads": 306667,
     "updates": 69843,
     "created": "2023-12-09T04:25:58Z",
     "updated": "2024-01-20T03:59:16Z"
@@ -4204,7 +4204,7 @@
         "name": "0.4.1",
         "hash": "10cef9bfbf87516f614f0b3c6ab5c7bc1c23e011b6ebb81517d33e806e1def8d",
         "created": "2024-11-25T00:51:46Z",
-        "downloads": 23444,
+        "downloads": 23445,
         "updates": 26334
       },
       {
@@ -4252,7 +4252,7 @@
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/CheatDeck-51bc4968c7a667d554750fa0e56e028a9ebff87d05d85c5e3ab941eb14e86d50.jpg",
-    "downloads": 44367,
+    "downloads": 44368,
     "updates": 30143,
     "created": "2023-12-24T18:03:14Z",
     "updated": "2024-11-25T00:51:46Z"
@@ -4386,7 +4386,7 @@
         "name": "1.0.2",
         "hash": "fcdd8dcce7d07632cd3613f61ad37d4591601f073ebbbaca5eb052c3b40b1d86",
         "created": "2024-08-26T12:11:25Z",
-        "downloads": 22762,
+        "downloads": 22763,
         "updates": 2614
       },
       {
@@ -4406,7 +4406,7 @@
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/MagicBlack-4b5253f504d7318087c5368d8ab177538fbed92d7c3c0f178763e5f3955f70da.png",
-    "downloads": 39652,
+    "downloads": 39653,
     "updates": 2625,
     "created": "2024-03-20T20:05:14Z",
     "updated": "2024-08-26T12:11:25Z"
@@ -4426,7 +4426,7 @@
         "hash": "6c0926ae7f1457afe45b1bd4f02599d5d677a5562142d73dc5e5161b859ae9df",
         "created": "2025-02-19T15:41:22Z",
         "downloads": 1050,
-        "updates": 8083
+        "updates": 8086
       },
       {
         "name": "1.0.1",
@@ -4446,7 +4446,7 @@
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/IsThereAnyDeal%20for%20Deck-0b997b64b394fd9ab01a7c8baaba452900a813bf3685d7ccfa794fe4e39d110d.png",
     "downloads": 72711,
-    "updates": 11872,
+    "updates": 11875,
     "created": "2024-04-19T09:01:50Z",
     "updated": "2025-02-19T15:41:22Z"
   },
@@ -4468,7 +4468,7 @@
         "hash": "39b00c36704af44d0c4fd59369fbccc108fd0671725b58d2b792553634baa17c",
         "created": "2024-10-20T18:30:53Z",
         "downloads": 32227,
-        "updates": 7630
+        "updates": 7631
       },
       {
         "name": "1.0.6",
@@ -4488,7 +4488,7 @@
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/MagicPods-e57f27dfd5da4bfee4c72bce18cf804de79f5c9e031e7af237117eca9385fdac.png",
     "downloads": 69331,
-    "updates": 7677,
+    "updates": 7678,
     "created": "2024-04-22T18:45:15Z",
     "updated": "2024-10-20T18:30:53Z"
   },
@@ -4814,13 +4814,13 @@
         "name": "0.0.2",
         "hash": "0e9ffd3ccc07b12f64541129189fe84184efb9242373d01fbc90395f4d6bfbbc",
         "created": "2025-01-31T21:43:51Z",
-        "downloads": 676,
+        "downloads": 677,
         "updates": 43
       }
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/Decky%20DoT%20DNS-1af29d743c4be2b2b1ec96f149e4ed38b7d91f310049104976bb3bb2f0cc5ed9.jpg",
-    "downloads": 676,
+    "downloads": 677,
     "updates": 43,
     "created": "2025-01-31T21:43:51Z",
     "updated": "2025-01-31T21:43:51Z"
@@ -4893,14 +4893,14 @@
         "name": "0.9.1",
         "hash": "163a42f85f95abd7a51350075017ef53e17c02181304375659bf5e7e98bb920e",
         "created": "2025-02-14T19:22:28Z",
-        "downloads": 27920,
-        "updates": 8793
+        "downloads": 27925,
+        "updates": 8794
       }
     ],
     "visible": true,
     "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/Decky-Framegen-6506d4b96b264c5a91d63aee5c748cd203c14c4d079964c9f563a3b4d2ebdf88.jpg",
-    "downloads": 27920,
-    "updates": 8793,
+    "downloads": 27925,
+    "updates": 8794,
     "created": "2025-02-14T19:22:28Z",
     "updated": "2025-02-14T19:22:28Z"
   },
