@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       isNew: ${{ steps.compare.outputs.isNew }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -18,7 +19,7 @@ jobs:
         run: echo "STORE_SHA=$(sha256sum docs/_data/store.json)" >> $GITHUB_ENV
       - name: Poll and hash fresh store data
         run: |
-          curl https://plugins.deckbrew.xyz/plugins | jq > docs/_data/store.json
+          curl https://plugins.deckbrew.xyz/plugins | jq 'walk(if type == "object" then with_entries(select(.key | test("id") or test("downloads") or test("updates") | not)) else . end)' > docs/_data/store.json
           echo "NEW_STORE_SHA=$(sha256sum docs/_data/store.json)" >> $GITHUB_ENV
       - name: Compare hashes
         id: compare
@@ -26,17 +27,11 @@ jobs:
           if [[ "$STORE_SHA" != "$NEW_STORE_SHA" ]]; then
             echo "isNew=true" >> $GITHUB_OUTPUT
           fi
-  configure:
-    needs: query_store
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
       - name: Load local store data
         id: set-matrix
         run: echo "matrix=$(jq -c . < docs/_data/store.json)" >> $GITHUB_OUTPUT
   update_or_create_pages:
-    needs: configure
+    needs: query_store
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -44,19 +39,19 @@ jobs:
     steps:
       - name: Check if page exists
         run: echo ${{ matrix.plugin.name }}
-  create_pr:
-    needs: update_or_create_pages
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create or Update Pull Request
-        if: ${{ steps.update_or_create_pages.outputs.isNew == 'true' }}
-        uses: gr2m/create-or-update-pull-request-action@v1.10.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          branch: "workflows-update-store"
-          commit-message: "chore: update store.json"
-          auto-merge: merge
-          labels: automerge
-          update-pull-request-title-and-body: true
+  # create_pr:
+  #   needs: update_or_create_pages
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Create or Update Pull Request
+  #       if: ${{ steps.update_or_create_pages.outputs.isNew == 'true' }}
+  #       uses: gr2m/create-or-update-pull-request-action@v1.10.1
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         branch: "workflows-update-store"
+  #         commit-message: "chore: update store.json"
+  #         auto-merge: merge
+  #         labels: automerge
+  #         update-pull-request-title-and-body: true
       
