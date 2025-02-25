@@ -1,0 +1,10 @@
+---
+layout: page
+---
+
+{% assign store_metadata = site.store | where: "name", title %}
+<div class="pluginCard">
+  {{ page.title }}
+
+  {{ store_metadata.downloads }}
+</div>
