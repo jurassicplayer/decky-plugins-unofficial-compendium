@@ -18,12 +18,6 @@ horizontal: false
   {% assign categorized_plugins = site.plugins | where: "category", category %}
   {% assign sorted_plugins = categorized_plugins %}
   <!-- Generate cards for each project -->
-   <div class="simple_list">
-
-    {% for plugin in site.plugins %}
-      {{ plugin.title }}
-    {% endfor %}
-   </div>
   {% if page.horizontal %}
   <div class="container">
     <div class="row row-cols-1 row-cols-md-2">
