@@ -16,19 +16,16 @@ jobs:
           persist-credentials: false
       - name: Hash local store data
         run: echo "STORE_SHA=$(sha256sum docs/_data/store.json)" >> $GITHUB_ENV
-      - name: Poll store for fresh data
-        run: echo "NEW_JSON=$(curl https://plugins.deckbrew.xyz/plugins)" >> $GITHUB_ENV
-      - name: Hash new store data
-        run: echo `NEW_STORE_SHA=$(echo "$NEW_JSON" | sha256sum | awk '{ print $1 }')` >> $GITHUB_ENV
+      - name: Poll and hash fresh store data
+        run: |
+          curl https://plugins.deckbrew.xyz/plugins > docs/_data/store.json
+          echo "NEW_STORE_SHA=$(sha256sum docs/_data/store.json)" >> $GITHUB_ENV
       - name: Compare hashes
         id: compare
         run: |
           if [[ "$STORE_SHA" != "$NEW_STORE_SHA" ]]; then
             echo "isNew=true" >> $GITHUB_OUTPUT
           fi
-      - name: Update local store data
-        if: steps.compare.output.isNew == true
-        run: echo "$NEW_JSON" > docs/_data/store.json
       - name: Create or Update Pull Request
         if: steps.compare.output.isNew == true
         uses: gr2m/create-or-update-pull-request-action@v1.10.1
