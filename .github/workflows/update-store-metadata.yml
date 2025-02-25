@@ -26,8 +26,30 @@ jobs:
           if [[ "$STORE_SHA" != "$NEW_STORE_SHA" ]]; then
             echo "isNew=true" >> $GITHUB_OUTPUT
           fi
+  configure:
+    needs: query_store
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Load local store data
+        id: set-matrix
+        run: echo "matrix=$(jq -c . < docs/_data/store.json)" >> $GITHUB_OUTPUT
+  update_or_create_pages:
+    needs: configure
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        plugin: ${{ fromJson(needs.configure.outputs.matrix) }}
+    steps:
+      - name: Check if page exists
+        run: echo ${{ matrix.plugin.name }}
+  create_pr:
+    needs: update_or_create_pages
+    runs-on: ubuntu-latest
+    steps:
       - name: Create or Update Pull Request
-        if: ${{ steps.compare.outputs.isNew == 'true' }}
+        if: ${{ steps.update_or_create_pages.outputs.isNew == 'true' }}
         uses: gr2m/create-or-update-pull-request-action@v1.10.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
