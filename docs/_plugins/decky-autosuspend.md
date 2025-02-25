@@ -9,3 +9,5 @@ img: https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/AutoS
 ---
 
 This is another plugin
+{% assign store_metadata = site.store | where: "name", page.title | first %}
+{{ store_metadata.downloads }}

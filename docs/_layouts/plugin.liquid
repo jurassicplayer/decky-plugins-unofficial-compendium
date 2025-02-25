@@ -1,8 +1,7 @@
 ---
 layout: page
 ---
-
-{% assign store_metadata = site.store | where: "name", page.title | first %}
+{% assign store = site.store | where: "name", page.title | first %}
 
 <pre>
     site: {{ site | jsonify | escape }}
@@ -19,5 +18,5 @@ layout: page
   {{ page.project_url }}
   {{ page.category }}
   {{ page.content }}
-  {{ store_metadata.downloads }}
+  {{ store.downloads }}
 </div>
