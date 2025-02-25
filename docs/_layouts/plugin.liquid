@@ -2,9 +2,22 @@
 layout: page
 ---
 
-{% assign store_metadata = site.store | where: "name", page.title %}
+{% assign store_metadata = site.store | where: "name", page.title | first %}
+
+<pre>
+    site: {{ site | jsonify | escape }}
+    page: {{ page | jsonify | escape }}
+    store: {{ site.store | jsonify | escape }}
+    layout: {{ layout | jsonify | escape }}
+    content: {{ content | jsonify | escape }}
+    paginator: {{ paginator | jsonify | escape }}
+</pre>
+
 <div class="pluginCard">
   {{ page.title }}
-
+  {{ page.package_name }}
+  {{ page.project_url }}
+  {{ page.category }}
+  {{ page.content }}
   {{ store_metadata.downloads }}
 </div>
