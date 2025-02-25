@@ -2,7 +2,7 @@
 layout: page
 ---
 
-{% assign store_metadata = site.store | where: "name", title %}
+{% assign store_metadata = site.store | where: "name", page.title %}
 <div class="pluginCard">
   {{ page.title }}
 
