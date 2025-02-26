@@ -41,22 +41,22 @@ jobs:
         run: |
           if [ ! -f "docs/_plugins/${{ matrix.plugin.name }}.md" ]; then
             cat >"docs/_plugins/${{ matrix.plugin.name }}.md" <<EOL
-            ---
-            layout: plugin
-            name: ${{ matrix.plugin.name }}
-            description: ${{ matrix.plugin.description }}
-            tags: ${{ matrix.plugin.tags }}
-            versions: ${{ matrix.plugin.versions }}
-            image_url: ${{ matrix.plugin.image_url }}
-            created: ${{ matrix.plugin.created }}
-            updated: ${{ matrix.plugin.updated }}
-            package_name: 
-            project_url: 
-            category: Active
-            available_in_store: True
-            ---
-            {\% assign store = site.data.store | where: "name", page.name | first \%}
-            EOL
+              ---
+              layout: plugin
+              name: ${{ matrix.plugin.name }}
+              description: ${{ matrix.plugin.description }}
+              tags: ${{ matrix.plugin.tags }}
+              versions: ${{ matrix.plugin.versions }}
+              image_url: ${{ matrix.plugin.image_url }}
+              created: ${{ matrix.plugin.created }}
+              updated: ${{ matrix.plugin.updated }}
+              package_name: 
+              project_url: 
+              category: Active
+              available_in_store: True
+              ---
+              {\% assign store = site.data.store | where: "name", page.name | first \%}
+              EOL
             echo Generated new ${{ matrix.plugin.name }} page
           fi
       # - name: Check if ${{ matrix.plugin.name }} has new data
