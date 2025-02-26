@@ -37,8 +37,75 @@ jobs:
       matrix:
         plugin: ${{ fromJson(needs.query_store.outputs.matrix) }}
     steps:
-      - name: Check if page exists
-        run: echo ${{ matrix.plugin.name }}
+      - name: Check if ${{ matrix.plugin.name }} page exists
+        id: check-if-new
+        run: |
+          if [ ! -f "docs/_plugins/${{ matrix.plugin.name }}.md" ]; then
+            echo "${{ matrix.plugin.name }}_isNew=true" >> $GITHUB_OUTPUT
+          fi
+      - name: Create ${{ matrix.plugin.name }} page
+        if ${{ steps.check-if-new.outputs.${{ matrix.plugin.name }}_isNew == true }}
+        run: |
+            cat >"docs/_plugins/${{ matrix.plugin.name }}.md" <<EOL
+            ---
+            layout: plugin
+            name: ${{ matrix.plugin.name }}
+            description: ${{ matrix.plugin.description }}
+            tags: ${{ matrix.plugin.tags }}
+            versions: ${{ matrix.plugin.versions }}
+            image_url: ${{ matrix.plugin.image_url }}
+            created: ${{ matrix.plugin.created }}
+            updated: ${{ matrix.plugin.updated }}
+            package_name: 
+            project_url: 
+            category: Active
+            available_in_store: True
+            ---
+            {\% assign store = site.data.store | where: "name", page.name | first \%}
+            EOL
+            echo Generated new ${{ matrix.plugin.name }} page
+      # - name: Check if ${{ matrix.plugin.name }} has new data
+      #   if: ${{ steps.check-if-new.outputs.${{ matrix.plugin.name }}_isNew != true }}
+      #   id: check-if-update
+      #   run: |
+            # echo Check if the plugin metadata matches the store data or not
+      # - name: Update or create ${{ matrix.plugin.name }} page
+      #   run: |
+      #     if [ -f "docs/_plugins/${{ matrix.plugin.name }}.md" ]; then
+      #       sed -i 's/description:.*/description: ${{ matrix.plugin.description }}/g' "docs/_plugins/${{ matrix.plugin.name }}.md"
+      #       sed -i 's/tags:.*/tags: ${{ matrix.plugin.tags }}/g' "docs/_plugins/${{ matrix.plugin.name }}.md"
+      #       sed -i 's/versions:.*/versions: ${{ matrix.plugin.versions }}/g' "docs/_plugins/${{ matrix.plugin.name }}.md"
+      #       sed -i 's/image_url:.*/image_url: ${{ matrix.plugin.image_url }}/g' "docs/_plugins/${{ matrix.plugin.name }}.md"
+      #       sed -i 's/created:.*/created: ${{ matrix.plugin.created }}/g' "docs/_plugins/${{ matrix.plugin.name }}.md"
+      #       sed -i 's/updated:.*/updated: ${{ matrix.plugin.updated }}/g' "docs/_plugins/${{ matrix.plugin.name }}.md"
+      #       echo Updated ${{ matrix.plugin.name }} page
+      #     else
+      #       cat >"docs/_plugins/${{ matrix.plugin.name }}.md" <<EOL
+      #       ---
+      #       layout: plugin
+      #       name: ${{ matrix.plugin.name }}
+      #       description: ${{ matrix.plugin.description }}
+      #       tags: ${{ matrix.plugin.tags }}
+      #       versions: ${{ matrix.plugin.versions }}
+      #       image_url: ${{ matrix.plugin.image_url }}
+      #       created: ${{ matrix.plugin.created }}
+      #       updated: ${{ matrix.plugin.updated }}
+      #       package_name: 
+      #       project_url: 
+      #       category: Active
+      #       available_in_store: True
+      #       ---
+      #       {\% assign store = site.data.store | where: "name", page.name | first \%}
+      #       EOL
+      #       echo Generated new ${{ matrix.plugin.name }} page
+      #     fi
+      - name: Upload page artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.plugin.name }}
+          path: docs/_plugins/${{ matrix.plugin.name }}.md
+          
+
   # create_pr:
   #   needs: update_or_create_pages
   #   runs-on: ubuntu-latest
