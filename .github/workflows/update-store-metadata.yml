@@ -37,15 +37,9 @@ jobs:
       matrix:
         plugin: ${{ fromJson(needs.query_store.outputs.matrix) }}
     steps:
-      - name: Check if ${{ matrix.plugin.name }} page exists
-        id: check-if-new
+      - name: Handle if new ${{ matrix.plugin.name }} page
         run: |
           if [ ! -f "docs/_plugins/${{ matrix.plugin.name }}.md" ]; then
-            echo "${{ matrix.plugin.name }}_isNew=true" >> $GITHUB_OUTPUT
-          fi
-      - name: Create ${{ matrix.plugin.name }} page
-        if: ${{ steps.check-if-new.outputs.${{ matrix.plugin.name }}_isNew == true }}
-        run: |
             cat >"docs/_plugins/${{ matrix.plugin.name }}.md" <<EOL
             ---
             layout: plugin
@@ -64,6 +58,7 @@ jobs:
             {\% assign store = site.data.store | where: "name", page.name | first \%}
             EOL
             echo Generated new ${{ matrix.plugin.name }} page
+          fi
       # - name: Check if ${{ matrix.plugin.name }} has new data
       #   if: ${{ steps.check-if-new.outputs.${{ matrix.plugin.name }}_isNew != true }}
       #   id: check-if-update
