@@ -44,7 +44,7 @@ jobs:
             echo "${{ matrix.plugin.name }}_isNew=true" >> $GITHUB_OUTPUT
           fi
       - name: Create ${{ matrix.plugin.name }} page
-        if ${{ steps.check-if-new.outputs.${{ matrix.plugin.name }}_isNew == true }}
+        if: ${{ steps.check-if-new.outputs.${{ matrix.plugin.name }}_isNew == true }}
         run: |
             cat >"docs/_plugins/${{ matrix.plugin.name }}.md" <<EOL
             ---
