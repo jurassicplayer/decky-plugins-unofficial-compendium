@@ -46,12 +46,22 @@ jobs:
         run: |
           if [ ! -f "docs/_plugins/${{ matrix.plugin.name }}.md" ]; then
             echo "isNew=true" >> $GITHUB_OUTPUT
+          else
+            OLDSHA=$(sha256sum "docs/_plugins/${{ matrix.plugin.name }}.md" | awk '{ print $1 }')
+            sed -i 's/description:.*/description: ${{ matrix.plugin.description }}/g' \
+              -e 's/tags:.*/tags: ${{ matrix.plugin.tags }}/g' \
+              -e 's/versions:.*/versions: ${{ matrix.plugin.versions }}/g' \
+              -e 's/image_url:.*/image_url: ${{ matrix.plugin.image_url }}/g' \
+              -e 's/created:.*/created: ${{ matrix.plugin.created }}/g' \
+              -e 's/updated:.*/updated: ${{ matrix.plugin.updated }}/g' \
+              "docs/_plugins/${{ matrix.plugin.name }}.md"
+            NEWSHA=$(sha256sum "docs/_plugins/${{ matrix.plugin.name }}.md" | awk '{ print $1 }')
+            if [ "$OLDSHA" = "$NEWSHA" ]; then
+              echo "hasChanges=true" >> $GITHUB_OUTPUT
+            fi
           fi
       - name: Create new ${{ matrix.plugin.name }} page
         if: ${{ steps.check_local.outputs.isNew }}
-        run: |
-          echo Do something
-      - name: Handle if new ${{ matrix.plugin.name }} page
         run: |
           if [ ! -f "docs/_plugins/${{ matrix.plugin.name }}.md" ]; then
             echo --- > "docs/_plugins/${{ matrix.plugin.name }}.md"
@@ -107,7 +117,7 @@ jobs:
       #       echo Generated new ${{ matrix.plugin.name }} page
       #     fi
       - name: Upload page artifact
-        if: ${{ steps.check_local.outputs.isNew }}
+        if: ${{ steps.check_local.outputs.isNew || steps.check_local.outputs.hasChanges }}
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.plugin.name }}.md
