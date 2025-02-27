@@ -48,7 +48,7 @@ jobs:
             echo "isNew=true" >> $GITHUB_OUTPUT
           fi
       - name: Create new ${{ matrix.plugin.name }} page
-        if: steps.check_local.outputs.isNew == "true"
+        if: ${{ steps.check_local.outputs.isNew }}
         run: |
           echo Do something
       - name: Handle if new ${{ matrix.plugin.name }} page
@@ -107,7 +107,7 @@ jobs:
       #       echo Generated new ${{ matrix.plugin.name }} page
       #     fi
       - name: Upload page artifact
-        if: steps.check_local.outputs.isNew == "true"
+        if: ${{ steps.check_local.outputs.isNew }}
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.plugin.name }}.md
