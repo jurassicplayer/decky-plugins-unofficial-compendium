@@ -35,8 +35,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        fail-fast: false
-        max-parallel: 5
         plugin: ${{ fromJson(needs.query_store.outputs.matrix) }}
     steps:
       - name: Checkout repo
