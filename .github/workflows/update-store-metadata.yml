@@ -40,24 +40,21 @@ jobs:
       - name: Handle if new ${{ matrix.plugin.name }} page
         run: |
           if [ ! -f "docs/_plugins/${{ matrix.plugin.name }}.md" ]; then
-            template="$(cat <<-EOL
-              ---
-              layout: plugin
-              name: ${{ matrix.plugin.name }}
-              description: ${{ matrix.plugin.description }}
-              tags: ${{ matrix.plugin.tags }}
-              versions: ${{ matrix.plugin.versions }}
-              image_url: ${{ matrix.plugin.image_url }}
-              created: ${{ matrix.plugin.created }}
-              updated: ${{ matrix.plugin.updated }}
-              package_name: 
-              project_url: 
-              category: Active
-              available_in_store: True
-              ---
-              {\% assign store = site.data.store | where: "name", page.name | first \%}
-              EOL)"
-            echo "$template" > "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `---` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `layout: plugin` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `name: ${{ matrix.plugin.name }}` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `description: ${{ matrix.plugin.description }}` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `tags: ${{ matrix.plugin.tags }}` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `versions: ${{ matrix.plugin.versions }}` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `image_url: ${{ matrix.plugin.image_url }}` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `created: ${{ matrix.plugin.created }}` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `updated: ${{ matrix.plugin.updated }}` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `package_name: ` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `project_url: ` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `category: Active` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `available_in_store: True` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `---` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `{\% assign store = site.data.store | where: "name", page.name | first \%}` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo Generated new ${{ matrix.plugin.name }} page
           fi
       # - name: Check if ${{ matrix.plugin.name }} has new data
