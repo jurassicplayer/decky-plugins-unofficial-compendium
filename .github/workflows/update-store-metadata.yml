@@ -47,7 +47,7 @@ jobs:
             echo --- > "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo layout: plugin >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo name: "${{ matrix.plugin.name }}" >> "docs/_plugins/${{ matrix.plugin.name }}.md"
-            echo description: ${{ matrix.plugin.description }}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo description: "${{ matrix.plugin.description }}" >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo tags: "${{ matrix.plugin.tags }}" >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo versions: "${{ matrix.plugin.versions }}" >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo image_url: ${{ matrix.plugin.image_url }} >> "docs/_plugins/${{ matrix.plugin.name }}.md"
