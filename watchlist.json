@@ -1,0 +1,12 @@
+[
+  {
+    "plugin_name": "decky-autosuspend",
+    "upstream_url": "https://api.github.com/repos/jurassicplayer/decky-autosuspend/commits",
+    "hash": "1e44054bc201b51e36bb713c786ee339c8fb4c4098479f25a1c7ddd6e6840244"
+  },
+  {
+    "plugin_name": "decky-autoflatpaks",
+    "upstream_url": "https://api.github.com/repos/jurassicplayer/decky-autoflatpaks/commits",
+    "hash": "b2f447ac727a0591527b78e98d9e246dd1a8e0bced7537841fd3f858538288de"
+  }
+]
