@@ -40,7 +40,7 @@ jobs:
       - name: Handle if new ${{ matrix.plugin.name }} page
         run: |
           if [ ! -f "docs/_plugins/${{ matrix.plugin.name }}.md" ]; then
-            echo `---` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo `---` > "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo `layout: plugin` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo `name: ${{ matrix.plugin.name }}` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo `description: ${{ matrix.plugin.description }}` >> "docs/_plugins/${{ matrix.plugin.name }}.md"
