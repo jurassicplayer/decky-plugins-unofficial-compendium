@@ -35,6 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        fail-fast: false
+        max-parallel: 5
         plugin: ${{ fromJson(needs.query_store.outputs.matrix) }}
     steps:
       - name: Checkout repo
@@ -46,19 +48,6 @@ jobs:
         run: |
           if [ ! -f "docs/_plugins/${{ matrix.plugin.name }}.md" ]; then
             echo "isNew=true" >> $GITHUB_OUTPUT
-          else
-            OLDSHA=$(sha256sum "docs/_plugins/${{ matrix.plugin.name }}.md" | awk '{ print $1 }')
-            sed -i 's/description:.*/description: '"${{ matrix.plugin.description }}"'/g' \
-              -e 's/tags:.*/tags: '"${{ matrix.plugin.tags }}"'/g' \
-              -e 's/versions:.*/versions: '"${{ matrix.plugin.versions }}"'/g' \
-              -e 's/image_url:.*/image_url: '"${{ matrix.plugin.image_url }}"'/g' \
-              -e 's/created:.*/created: '"${{ matrix.plugin.created }}"'/g' \
-              -e 's/updated:.*/updated: '"${{ matrix.plugin.updated }}"'/g' \
-              "docs/_plugins/${{ matrix.plugin.name }}.md"
-            NEWSHA=$(sha256sum "docs/_plugins/${{ matrix.plugin.name }}.md" | awk '{ print $1 }')
-            if [ "$OLDSHA" = "$NEWSHA" ]; then
-              echo "hasChanges=true" >> $GITHUB_OUTPUT
-            fi
           fi
       - name: Create new ${{ matrix.plugin.name }} page
         if: ${{ steps.check_local.outputs.isNew }}
@@ -81,6 +70,19 @@ jobs:
             echo '{\% assign store = site.data.store | where: "name", page.name | first \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo Generated new ${{ matrix.plugin.name }} page
           fi
+      - name: Fix local page metadata
+        if: ${{ ! steps.check_local.outputs.isNew }}
+        run: |
+          metadata="$(pcregrep -M '(?s)---.*?\n---' docs/_plugins/${{ matrix.plugin.name }}.md)"
+          oldSha=$(echo $metadata | sha256sum | awk "{ print $1 }")
+          if grep -Fxq "description:" $metadata; then
+            sed -i 's/description:.*/description: '"${{ matrix.plugin.description }}"'/g' "docs/_plugins/${{ matrix.plugin.name }}.md"
+          else
+            metadata=$(echo $metadata | sed '3 a description: '"${{ matrix.plugin.description }}")
+          fi
+          echo $oldSha
+          echo $(echo $metadata | sha256sum | awk "{ print $1 }")
+
       # - name: Check if ${{ matrix.plugin.name }} has new data
       #   if: ${{ steps.check-if-new.outputs.${{ matrix.plugin.name }}_isNew != true }}
       #   id: check-if-update
