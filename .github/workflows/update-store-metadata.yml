@@ -48,12 +48,12 @@ jobs:
             echo "isNew=true" >> $GITHUB_OUTPUT
           else
             OLDSHA=$(sha256sum "docs/_plugins/${{ matrix.plugin.name }}.md" | awk '{ print $1 }')
-            sed -i 's/description:.*/description: ${{ matrix.plugin.description }}/g' \
-              -e 's/tags:.*/tags: ${{ matrix.plugin.tags }}/g' \
-              -e 's/versions:.*/versions: ${{ matrix.plugin.versions }}/g' \
-              -e 's/image_url:.*/image_url: ${{ matrix.plugin.image_url }}/g' \
-              -e 's/created:.*/created: ${{ matrix.plugin.created }}/g' \
-              -e 's/updated:.*/updated: ${{ matrix.plugin.updated }}/g' \
+            sed -i 's/description:.*/description: '"${{ matrix.plugin.description }}"'/g' \
+              -e 's/tags:.*/tags: '"${{ matrix.plugin.tags }}"'/g' \
+              -e 's/versions:.*/versions: '"${{ matrix.plugin.versions }}"'/g' \
+              -e 's/image_url:.*/image_url: '"${{ matrix.plugin.image_url }}"'/g' \
+              -e 's/created:.*/created: '"${{ matrix.plugin.created }}"'/g' \
+              -e 's/updated:.*/updated: '"${{ matrix.plugin.updated }}"'/g' \
               "docs/_plugins/${{ matrix.plugin.name }}.md"
             NEWSHA=$(sha256sum "docs/_plugins/${{ matrix.plugin.name }}.md" | awk '{ print $1 }')
             if [ "$OLDSHA" = "$NEWSHA" ]; then
