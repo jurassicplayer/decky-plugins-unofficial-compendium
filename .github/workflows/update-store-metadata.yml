@@ -45,10 +45,10 @@ jobs:
         id: check_local
         run: |
           if [ ! -f "docs/_plugins/${{ matrix.plugin.name }}.md" ]; then
-            echo "isNew=True" >> $GITHUB_OUTPUT
+            echo "isNew=true" >> $GITHUB_OUTPUT
           fi
       - name: Create new ${{ matrix.plugin.name }} page
-        if: ${{ steps.check_local.outputs.isNew == True }}
+        if: steps.check_local.outputs.isNew == "true"
         run: |
           echo Do something
       - name: Handle if new ${{ matrix.plugin.name }} page
@@ -107,7 +107,7 @@ jobs:
       #       echo Generated new ${{ matrix.plugin.name }} page
       #     fi
       - name: Upload page artifact
-        if: ${{ steps.check_local.outputs.isNew == True }}
+        if: steps.check_local.outputs.isNew == "true"
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.plugin.name }}.md
