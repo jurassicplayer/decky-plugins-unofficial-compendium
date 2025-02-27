@@ -37,6 +37,10 @@ jobs:
       matrix:
         plugin: ${{ fromJson(needs.query_store.outputs.matrix) }}
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - name: Handle if new ${{ matrix.plugin.name }} page
         run: |
           if [ ! -f "docs/_plugins/${{ matrix.plugin.name }}.md" ]; then
