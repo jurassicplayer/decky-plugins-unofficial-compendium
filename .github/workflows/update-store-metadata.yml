@@ -128,8 +128,6 @@ jobs:
             { echo -n "$metadata"; echo -n "$nonMetadata" } > "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo "hasChanges=true" >> $GITHUB_OUTPUT
             echo Updating ${{ matrix.plugin.name }}.md metadata
-          else
-            echo No changes found
           fi
 
       # - name: Check if ${{ matrix.plugin.name }} has new data
