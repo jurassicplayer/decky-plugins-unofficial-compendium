@@ -89,31 +89,37 @@ jobs:
           else
             metadata=$(echo "$metadata" | sed '3 a description: '"${{ matrix.plugin.description }}")
           fi
+          echo Updated description
           if echo "$metadata" | grep -Fq "tags:"; then
             metadata=$(echo "$metadata" | sed 's/tags:.*/tags: '"$tags"'/g')
           else
             metadata=$(echo "$metadata" | sed '4 a tags: '"$tags")
           fi
+          echo Updated tags
           if echo "$metadata" | grep -Fq "versions:"; then
             metadata=$(echo "$metadata" | sed 's/versions:.*/versions: '"$versions"'/g')
           else
             metadata=$(echo "$metadata" | sed '5 a versions: '"$versions")
           fi
+          echo Updated versions
           if echo "$metadata" | grep -Fq "image_url:"; then
             metadata=$(echo "$metadata" | sed 's/image_url:.*/image_url: '"${{ matrix.plugin.image_url }}"'/g')
           else
             metadata=$(echo "$metadata" | sed '6 a image_url: '"${{ matrix.plugin.image_url }}")
           fi
+          echo updated image_url
           if echo "$metadata" | grep -Fq "created:"; then
             metadata=$(echo "$metadata" | sed 's/created:.*/created: '"${{ matrix.plugin.created }}"'/g')
           else
             metadata=$(echo "$metadata" | sed '7 a created: '"${{ matrix.plugin.created }}")
           fi
+          echo Updated created date
           if echo "$metadata" | grep -Fq "updated:"; then
             metadata=$(echo "$metadata" | sed 's/updated:.*/updated: '"${{ matrix.plugin.updated }}"'/g')
           else
             metadata=$(echo "$metadata" | sed '8 a updated: '"${{ matrix.plugin.updated }}")
           fi
+          echo Updated last updated date
           if ! echo "$metadata" | grep -Fq "package_name:"; then
             metadata=$(echo "$metadata" | sed '9 a package_name: ')
           fi
