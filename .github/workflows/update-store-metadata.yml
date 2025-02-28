@@ -125,7 +125,7 @@ jobs:
           fi
           newSha=$(echo "$metadata" | sha256sum | awk '{ print $1 }')
           if [ "$oldSha" = "$newSha" ]; then
-            { echo -n "$metadata"; echo -n "$nonMetadata" } > "docs/_plugins/${{ matrix.plugin.name }}.md"
+            { echo -n "$metadata"; echo -n "$nonMetadata"; } > "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo "hasChanges=true" >> $GITHUB_OUTPUT
             echo "Updating ${{ matrix.plugin.name }}.md metadata"
           fi
