@@ -79,12 +79,8 @@ jobs:
         id: update_local
         if: ${{ ! steps.check_local.outputs.isNew }}
         run: |
-          tags=$(cat << 'EOF' \
-            ${{ toJson(matrix.plugins.tags) }} \
-            EOF)
-          versions=$(cat << 'EOF' \
-            ${{ toJson(matrix.plugins.versions) }} \
-            EOF)
+          tags=$(echo ${{ toJson(matrix.plugins.tags) }})
+          versions=$(echo ${{ toJson(matrix.plugins.versions) }})
           metadata="$(awk 'BEGIN {p=0}; /---/ {p = ! p; next}; p { print }' docs/_plugins/${{ matrix.plugin.name }}.md)"
           nonMetadata="$(awk 'BEGIN {p=1}; /---/ {p = ! p; next}; p { print }' docs/_plugins/${{ matrix.plugin.name }}.md)"
           oldSha=$(echo "$metadata" | sha256sum | awk '{ print $1 }')
