@@ -79,6 +79,12 @@ jobs:
         id: update_local
         if: ${{ ! steps.check_local.outputs.isNew }}
         run: |
+          tags=$(cat << 'EOF' \
+            ${{ toJson(matrix.plugins.tags) }} \
+            EOF)
+          versions=$(cat << 'EOF' \
+            ${{ toJson(matrix.plugins.versions) }} \
+            EOF)
           metadata="$(awk 'BEGIN {p=0}; /---/ {p = ! p; next}; p { print }' docs/_plugins/${{ matrix.plugin.name }}.md)"
           nonMetadata="$(awk 'BEGIN {p=1}; /---/ {p = ! p; next}; p { print }' docs/_plugins/${{ matrix.plugin.name }}.md)"
           oldSha=$(echo "$metadata" | sha256sum | awk '{ print $1 }')
@@ -88,14 +94,14 @@ jobs:
             metadata=$(echo "$metadata" | sed '3 a description: '"${{ matrix.plugin.description }}")
           fi
           if echo "$metadata" | grep -Fq "tags:"; then
-            metadata=$(echo "$metadata" | sed 's/tags:.*/tags: '"${{ toJson(matrix.plugin.tags) }}"'/g')
+            metadata=$(echo "$metadata" | sed 's/tags:.*/tags: '"$tags"'/g')
           else
-            metadata=$(echo "$metadata" | sed '4 a tags: '"${{ toJson(matrix.plugin.tags) }}")
+            metadata=$(echo "$metadata" | sed '4 a tags: '"$tags")
           fi
           if echo "$metadata" | grep -Fq "versions:"; then
-            metadata=$(echo "$metadata" | sed 's/versions:.*/versions: '"${{ toJson(matrix.plugin.versions) }}"'/g')
+            metadata=$(echo "$metadata" | sed 's/versions:.*/versions: '"$versions"'/g')
           else
-            metadata=$(echo "$metadata" | sed '5 a versions: '"${{ toJson(matrix.plugin.versions) }}")
+            metadata=$(echo "$metadata" | sed '5 a versions: '"$versions")
           fi
           if echo "$metadata" | grep -Fq "image_url:"; then
             metadata=$(echo "$metadata" | sed 's/image_url:.*/image_url: '"${{ matrix.plugin.image_url }}"'/g')
