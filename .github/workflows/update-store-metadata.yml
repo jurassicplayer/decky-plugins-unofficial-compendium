@@ -78,15 +78,16 @@ jobs:
       - name: Fix local page metadata
         if: ${{ ! steps.check_local.outputs.isNew }}
         run: |
-          metadata="$(pcregrep -M '(?s)---.*?\n---' docs/_plugins/${{ matrix.plugin.name }}.md)"
+          metadata="$(awk 'BEGIN {p=0}; /---/ {p = ! p; next}; p { print }' docs/_plugins/${{ matrix.plugin.name }}.md)"
           oldSha=$(echo $metadata | sha256sum | awk "{ print $1 }")
           if grep -Fxq "description:" $metadata; then
-            sed -i 's/description:.*/description: '"${{ matrix.plugin.description }}"'/g' "docs/_plugins/${{ matrix.plugin.name }}.md"
+            metadata=$(echo $metadata | sed 's/description:.*/description: '"${{ matrix.plugin.description }}"'/g')
           else
             metadata=$(echo $metadata | sed '3 a description: '"${{ matrix.plugin.description }}")
           fi
           echo $oldSha
-          echo $(echo $metadata | sha256sum | awk "{ print $1 }")
+          newSha=$(echo $metadata | sha256sum | awk "{ print $1 }")
+          echo $newSha
 
       # - name: Check if ${{ matrix.plugin.name }} has new data
       #   if: ${{ steps.check-if-new.outputs.${{ matrix.plugin.name }}_isNew != true }}
