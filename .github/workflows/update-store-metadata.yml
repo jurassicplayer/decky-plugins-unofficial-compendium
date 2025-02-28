@@ -127,7 +127,7 @@ jobs:
           if [ "$oldSha" = "$newSha" ]; then
             { echo -n "$metadata"; echo -n "$nonMetadata" } > "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo "hasChanges=true" >> $GITHUB_OUTPUT
-            echo Updating ${{ matrix.plugin.name }}.md metadata
+            echo "Updating ${{ matrix.plugin.name }}.md metadata"
           fi
 
       # - name: Check if ${{ matrix.plugin.name }} has new data
