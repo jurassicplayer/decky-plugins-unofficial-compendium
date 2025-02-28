@@ -79,7 +79,8 @@ jobs:
         if: ${{ ! steps.check_local.outputs.isNew }}
         run: |
           metadata="$(awk 'BEGIN {p=0}; /---/ {p = ! p; next}; p { print }' docs/_plugins/${{ matrix.plugin.name }}.md)"
-          oldSha=$(echo "$metadata" | sha256sum | awk "{ print $1 }")
+          nonMetadata="$(awk 'BEGIN {p=1}; /---/ {p = ! p; next}; p { print }' docs/_plugins/${{ matrix.plugin.name }}.md)"
+          oldSha=$(echo "$metadata" | sha256sum | awk '{ print $1 }')
           if [ `echo "$metadata" | grep -Fxq "description:"` ]; then
             metadata=$(echo "$metadata" | sed 's/description:.*/description: '"${{ matrix.plugin.description }}"'/g')
           else
@@ -122,10 +123,14 @@ jobs:
           if [ ! `echo "$metadata" | grep -Fxq "available_in_store:"` ]; then
             metadata=$(echo "$metadata" | sed '12 a available_in_store: ')
           fi
-          echo $oldSha
-          newSha=$(echo "$metadata" | sha256sum | awk "{ print $1 }")
-          echo $newSha
-          echo "$metadata"
+          newSha=$(echo "$metadata" | sha256sum | awk '{ print $1 }')
+          if [ "$oldSha" = "$newSha" ]; then
+            { echo -n "$metadata"; echo -n "$nonMetadata" } > "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo "hasChanges=true" >> $GITHUB_OUTPUT
+            echo Updating ${{ matrix.plugin.name }}.md metadata
+          else
+            echo No changes found
+          fi
 
       # - name: Check if ${{ matrix.plugin.name }} has new data
       #   if: ${{ steps.check-if-new.outputs.${{ matrix.plugin.name }}_isNew != true }}
