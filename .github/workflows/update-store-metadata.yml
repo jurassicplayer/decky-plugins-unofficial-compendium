@@ -76,6 +76,7 @@ jobs:
             echo Generated new ${{ matrix.plugin.name }} page
           fi
       - name: Fix local page metadata
+        id: update_local
         if: ${{ ! steps.check_local.outputs.isNew }}
         run: |
           metadata="$(awk 'BEGIN {p=0}; /---/ {p = ! p; next}; p { print }' docs/_plugins/${{ matrix.plugin.name }}.md)"
@@ -124,6 +125,9 @@ jobs:
             metadata=$(echo "$metadata" | sed '12 a available_in_store: ')
           fi
           newSha=$(echo "$metadata" | sha256sum | awk '{ print $1 }')
+          echo "$oldSha"
+          echo "$newSha"
+          echo "$metadata"
           if [ "$oldSha" = "$newSha" ]; then
             { echo -n "$metadata"; echo -n "$nonMetadata"; } > "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo "hasChanges=true" >> $GITHUB_OUTPUT
@@ -166,7 +170,7 @@ jobs:
       #       echo Generated new ${{ matrix.plugin.name }} page
       #     fi
       - name: Upload page artifact
-        if: ${{ steps.check_local.outputs.isNew || steps.check_local.outputs.hasChanges }}
+        if: ${{ steps.check_local.outputs.isNew || steps.update_local.outputs.hasChanges }}
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.plugin.name }}.md
