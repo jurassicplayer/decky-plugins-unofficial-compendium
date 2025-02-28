@@ -119,19 +119,17 @@ jobs:
             metadata=$(echo "$metadata" | sed '10 a project_url: ')
           fi
           if [ ! `echo "$metadata" | grep -Fxq "category:"` ]; then
-            metadata=$(echo "$metadata" | sed '11 a category: ')
+            metadata=$(echo "$metadata" | sed '11 a category: Active')
           fi
           if [ ! `echo "$metadata" | grep -Fxq "available_in_store:"` ]; then
-            metadata=$(echo "$metadata" | sed '12 a available_in_store: ')
+            metadata=$(echo "$metadata" | sed '12 a available_in_store: True')
           fi
           newSha=$(echo "$metadata" | sha256sum | awk '{ print $1 }')
-          echo "$oldSha"
-          echo "$newSha"
-          echo "$metadata"
-          if [ "$oldSha" = "$newSha" ]; then
-            { echo -n "$metadata"; echo -n "$nonMetadata"; } > "docs/_plugins/${{ matrix.plugin.name }}.md"
+          if [ ! "$oldSha" = "$newSha" ]; then
+            { echo -n "---"; echo -n "$metadata"; echo -n "---"; echo -n "$nonMetadata"; } > "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo "hasChanges=true" >> $GITHUB_OUTPUT
             echo "Updating ${{ matrix.plugin.name }}.md metadata"
+            cat "docs/_plugins/${{ matrix.plugin.name }}.md"
           fi
 
       # - name: Check if ${{ matrix.plugin.name }} has new data
