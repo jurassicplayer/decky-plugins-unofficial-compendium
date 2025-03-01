@@ -98,8 +98,8 @@ jobs:
                 plugin: 'plugin',
                 name: '${{ matrix.plugin.name }}',
                 description: '${{ matrix.plugin.description }}',
-                tags: '${{ toJson(matrix.plugin.tags) }}',
-                versions: '${{ toJson(matrix.plugin.versions) }}',
+                tags: '${{ matrix.plugin.tags }}',
+                versions: '${{ matrix.plugin.versions }}',
                 image_url: '${{ matrix.plugin.image_url }}',
                 created: '${{ matrix.plugin.created }}',
                 updated: '${{ matrix.plugin.updated }}',
@@ -111,22 +111,22 @@ jobs:
               let metadata = []
               console.log(`Replace old metadata with new metadata`)
               let oldMetadata = sMetadata.split('\n')
-              //for (let field in Object.keys(newData)) {
-              //  let metadataLine = `${field}: ${newData[field]}`
-              //  for (let oldData in oldMetadata){
-              //    if (oldData.startsWith(`${field}:`) && field != 'project_url') {
-              //      metadata.push(metadataLine)
-              //      oldMetadata = oldMetadata.filter(o => o != oldData)
-              //    } else if (field == 'project_url'){
-              //      metadata.push(oldData)
-              //      oldMetadata = oldMetadata.filter(o => o != oldData)
-              //    }
-              //  }
-              //}
+              for (let field in Object.keys(newData)) {
+                let metadataLine = `${field}: ${newData[field]}`
+                for (let oldData in oldMetadata){
+                  if (oldData.startsWith(`${field}:`) && field != 'project_url') {
+                    metadata.push(metadataLine)
+                    oldMetadata = oldMetadata.filter(o => o != oldData)
+                  } else if (field == 'project_url'){
+                    metadata.push(oldData)
+                    oldMetadata = oldMetadata.filter(o => o != oldData)
+                  }
+                }
+              }
               console.log(`Append remaining old metadata`)
-              //for (let remainingData of oldMetadata) {
-              //  metadata.push(remainingData)
-              //}
+              for (let remainingData of oldMetadata) {
+                metadata.push(remainingData)
+              }
               console.log(metadata)
             })
       # - name: Fix local page metadata
