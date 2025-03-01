@@ -67,7 +67,6 @@ jobs:
             echo image_url: ${{ matrix.plugin.image_url }} >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo created: ${{ matrix.plugin.created }} >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo updated: ${{ matrix.plugin.updated }} >> "docs/_plugins/${{ matrix.plugin.name }}.md"
-            echo 'package_name: ' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo 'project_url: ' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo category: Active >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo available_in_store: True >> "docs/_plugins/${{ matrix.plugin.name }}.md"
@@ -84,7 +83,50 @@ jobs:
             var fs = require('fs')
             fs.readFile('docs/_plugins/${{ matrix.plugin.name }}.md', 'utf-8', function (err, data){
               if (err) throw err;
-              console.log(data)
+              let fileSplit = data.split('---\n')
+              let sMetadata = ""
+              let nonMetadata = []
+              if (fileSplit.length >= 3) {
+                sMetadata = fileSplit[1]
+                nonMetadata = fileSplit.splice(1,1)
+              } else {
+                nonMetadata = fileSplit
+              }
+              let data = {
+                plugin: 'plugin',
+                name: '${{ matrix.plugin.name }}',
+                description: '${{ matrix.plugin.description }}',
+                tags: '${{ matrix.plugin.tags }}',
+                versions: '${{ matrix.plugin.versions }}',
+                image_url: '${{ matrix.plugin.image_url }}',
+                created: '${{ matrix.plugin.created }}',
+                updated: '${{ matrix.plugin.updated }}',
+                project_url: '',
+                category: 'Active',
+                available_in_store: 'true',
+              }
+              let metaFlags = {}
+              for (field in Object.keys(data)) {
+                if (!sMetadata.includes(field)){ metaFlags[field] = true }
+              }
+              let metadata = []
+              let oldMetadata = sMetadata.split('\n')
+              for (field in Object.keys(data)) {
+                let metadataLine = `${field}: ${data[field]}`
+                for (let oldData in oldMetadata){
+                  if (oldData.startsWith(`${field}:`) && field != 'project_url') {
+                    metadata.push(metadataLine)
+                    oldMetadata = oldMetadata.filter(data => data != oldData)
+                  } else if (field == 'project_url'){
+                    metadata.push(oldData)
+                    oldMetadata = oldMetadata.filter(data => data != oldData)
+                  }
+                }
+              }
+              for (let data of oldMetadata) {
+                metadata.push(data)
+              }
+              console.log(metadata)
             })
       # - name: Fix local page metadata
       #   id: update_local
