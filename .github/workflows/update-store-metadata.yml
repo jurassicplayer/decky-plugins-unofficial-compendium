@@ -74,6 +74,19 @@ jobs:
             echo '{\% assign store = site.data.store | where: "name", page.name | first \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo Generated new ${{ matrix.plugin.name }} page
           fi
+      - name: Create temporary ${{ matrix.plugin.name}}.store.md
+        run: |
+          echo layout: plugin >> "docs/_plugins/${{ matrix.plugin.name}}.store.md"
+          echo name: "${{ matrix.plugin.name }}" >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
+          echo description: "${{ matrix.plugin.description }}" >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
+          echo tags: "${{ toJson(matrix.plugin.tags) }}" >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
+          echo versions: "${{ toJson(matrix.plugin.versions) }}" >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
+          echo image_url: ${{ matrix.plugin.image_url }} >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
+          echo created: ${{ matrix.plugin.created }} >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
+          echo updated: ${{ matrix.plugin.updated }} >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
+          echo 'project_url: ' >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
+          echo category: Active >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
+          echo available_in_store: True >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
       - name: Fix local metadata for ${{ matrix.plugin.name }} page
         if: ${{ ! steps.check_local.outputs.isNew }}
         uses: actions/github-script@v7
@@ -81,54 +94,45 @@ jobs:
           result-encoding: string
           script: |
             var fs = require('fs')
-            fs.readFile('docs/_plugins/${{ matrix.plugin.name }}.md', 'utf-8', function (err, data){
-              if (err) throw err;
-              let fileSplit = data.split('---\n')
-              let sMetadata = ""
-              let nonMetadata = []
-              console.log(`Split local file into parts`)
-              if (fileSplit.length >= 3) {
-                sMetadata = fileSplit[1]
-                nonMetadata = fileSplit.splice(1,1)
-              } else {
-                nonMetadata = fileSplit
+            try {
+              let storeData = fs.readFileSync('docs/_plugins/${{ matrix.plugin.name }}.store.md', 'utf-8')
+              let localData = fs.readFileSync('docs/_plugins/${{ matrix.plugin.name }}.md', 'utf-8')
+            } catch (err) {
+              console.error(err)
+            }
+
+            let fileSplit = localData.split('---\n')
+            let sMetadata = ""
+            let nonMetadata = []
+            console.log(`Split local file into parts`)
+            if (fileSplit.length >= 3) {
+              sMetadata = fileSplit[1]
+              nonMetadata = fileSplit.splice(1,1)
+            } else {
+              nonMetadata = fileSplit
+            }
+            let metadata = []
+            console.log(`Replace old metadata with new metadata`)
+            let oldMetadata = sMetadata.split('\n')
+            let newMetadata = storeData.split('\n')
+            for (let newData of newMetadata) {
+              let field = newData.split(":")[0]
+              let oldData = oldMetadata.find(data => data.split(":")[0] == field)
+              if (field != 'project_url'){
+                metadata.push(newData)
+                oldMetadata = oldMetadata.filter(data => data != oldData)
+              } else if (field == 'project_url'){
+                metadata.push(oldData)
+                oldMetadata = oldMetadata.filter(data => data != oldData)
               }
-              console.log(`Create new metadata`)
-              let newData = {
-                plugin: 'plugin',
-                name: '${{ matrix.plugin.name }}',
-                description: '${{ matrix.plugin.description }}',
-                tags: '${{ matrix.plugin.tags }}',
-                versions: '${{ matrix.plugin.versions }}',
-                image_url: '${{ matrix.plugin.image_url }}',
-                created: '${{ matrix.plugin.created }}',
-                updated: '${{ matrix.plugin.updated }}',
-                project_url: '',
-                category: 'Active',
-                available_in_store: 'true',
-              }
-              let metaFlags = {}
-              let metadata = []
-              console.log(`Replace old metadata with new metadata`)
-              let oldMetadata = sMetadata.split('\n')
-              for (let field in Object.keys(newData)) {
-                let metadataLine = `${field}: ${newData[field]}`
-                for (let oldData in oldMetadata){
-                  if (oldData.startsWith(`${field}:`) && field != 'project_url') {
-                    metadata.push(metadataLine)
-                    oldMetadata = oldMetadata.filter(o => o != oldData)
-                  } else if (field == 'project_url'){
-                    metadata.push(oldData)
-                    oldMetadata = oldMetadata.filter(o => o != oldData)
-                  }
-                }
-              }
-              console.log(`Append remaining old metadata`)
-              for (let remainingData of oldMetadata) {
-                metadata.push(remainingData)
-              }
-              console.log(metadata)
-            })
+            }
+            console.log(`Append remaining old metadata`)
+            for (let remainingData of oldMetadata) {
+              metadata.push(remainingData)
+            }
+            console.log(metadata)
+
+
       # - name: Fix local page metadata
       #   id: update_local
       #   if: ${{ ! steps.check_local.outputs.isNew }}
