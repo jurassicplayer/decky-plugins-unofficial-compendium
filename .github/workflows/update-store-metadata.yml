@@ -86,12 +86,14 @@ jobs:
               let fileSplit = data.split('---\n')
               let sMetadata = ""
               let nonMetadata = []
+              console.log(`Split local file into parts`)
               if (fileSplit.length >= 3) {
                 sMetadata = fileSplit[1]
                 nonMetadata = fileSplit.splice(1,1)
               } else {
                 nonMetadata = fileSplit
               }
+              console.log(`Create new metadata`)
               let newData = {
                 plugin: 'plugin',
                 name: '${{ matrix.plugin.name }}',
@@ -107,6 +109,7 @@ jobs:
               }
               let metaFlags = {}
               let metadata = []
+              console.log(`Replace old metadata with new metadata`)
               let oldMetadata = sMetadata.split('\n')
               for (let field in Object.keys(newData)) {
                 let metadataLine = `${field}: ${newData[field]}`
@@ -120,6 +123,7 @@ jobs:
                   }
                 }
               }
+              console.log(`Append remaining old metadata`)
               for (let remainingData of oldMetadata) {
                 metadata.push(remainingData)
               }
