@@ -123,8 +123,8 @@ jobs:
                   }
                 }
               }
-              for (let data of oldMetadata) {
-                metadata.push(data)
+              for (let remainingData of oldMetadata) {
+                metadata.push(remainingData)
               }
               console.log(metadata)
             })
