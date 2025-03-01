@@ -94,9 +94,11 @@ jobs:
           result-encoding: string
           script: |
             var fs = require('fs')
+            let storeData = ''
+            let localData = ''
             try {
-              let storeData = fs.readFileSync('docs/_plugins/${{ matrix.plugin.name }}.store.md', 'utf-8')
-              let localData = fs.readFileSync('docs/_plugins/${{ matrix.plugin.name }}.md', 'utf-8')
+              storeData = fs.readFileSync('docs/_plugins/${{ matrix.plugin.name }}.store.md', 'utf-8')
+              localData = fs.readFileSync('docs/_plugins/${{ matrix.plugin.name }}.md', 'utf-8')
             } catch (err) {
               console.error(err)
             }
