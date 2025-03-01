@@ -75,105 +75,80 @@ jobs:
             echo '{\% assign store = site.data.store | where: "name", page.name | first \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo Generated new ${{ matrix.plugin.name }} page
           fi
-      - name: Fix local page metadata
-        id: update_local
+      - name: Fix local metadata for ${{ matrix.plugin.name }} page
         if: ${{ ! steps.check_local.outputs.isNew }}
-        run: |
-          tags=$(echo ${{ toJson(matrix.plugins.tags) }})
-          versions=$(echo ${{ toJson(matrix.plugins.versions) }})
-          metadata="$(awk 'BEGIN {p=0}; /---/ {p = ! p; next}; p { print }' docs/_plugins/${{ matrix.plugin.name }}.md)"
-          nonMetadata="$(awk 'BEGIN {p=1}; /---/ {p = ! p; next}; p { print }' docs/_plugins/${{ matrix.plugin.name }}.md)"
-          oldSha=$(echo "$metadata" | sha256sum | awk '{ print $1 }')
-          if echo "$metadata" | grep -Fq "description:"; then
-            metadata=$(echo "$metadata" | sed 's/description:.*/description: '"${{ matrix.plugin.description }}"'/g')
-          else
-            metadata=$(echo "$metadata" | sed '3 a description: '"${{ matrix.plugin.description }}")
-          fi
-          echo Updated description
-          if echo "$metadata" | grep -Fq "tags:"; then
-            metadata=$(echo "$metadata" | sed 's/tags:.*/tags: '"$tags"'/g')
-          else
-            metadata=$(echo "$metadata" | sed '4 a tags: '"$tags")
-          fi
-          echo Updated tags
-          if echo "$metadata" | grep -Fq "versions:"; then
-            metadata=$(echo "$metadata" | sed 's/versions:.*/versions: '"$versions"'/g')
-          else
-            metadata=$(echo "$metadata" | sed '5 a versions: '"$versions")
-          fi
-          echo Updated versions
-          if echo "$metadata" | grep -Fq "image_url:"; then
-            metadata=$(echo "$metadata" | sed 's/image_url:.*/image_url: '"${{ matrix.plugin.image_url }}"'/g')
-          else
-            metadata=$(echo "$metadata" | sed '6 a image_url: '"${{ matrix.plugin.image_url }}")
-          fi
-          echo updated image_url
-          if echo "$metadata" | grep -Fq "created:"; then
-            metadata=$(echo "$metadata" | sed 's/created:.*/created: '"${{ matrix.plugin.created }}"'/g')
-          else
-            metadata=$(echo "$metadata" | sed '7 a created: '"${{ matrix.plugin.created }}")
-          fi
-          echo Updated created date
-          if echo "$metadata" | grep -Fq "updated:"; then
-            metadata=$(echo "$metadata" | sed 's/updated:.*/updated: '"${{ matrix.plugin.updated }}"'/g')
-          else
-            metadata=$(echo "$metadata" | sed '8 a updated: '"${{ matrix.plugin.updated }}")
-          fi
-          echo Updated last updated date
-          if ! echo "$metadata" | grep -Fq "package_name:"; then
-            metadata=$(echo "$metadata" | sed '9 a package_name: ')
-          fi
-          if ! echo "$metadata" | grep -Fq "project_url:"; then
-            metadata=$(echo "$metadata" | sed '10 a project_url: ')
-          fi
-          if ! echo "$metadata" | grep -Fq "category:"; then
-            metadata=$(echo "$metadata" | sed '11 a category: Active')
-          fi
-          if ! echo "$metadata" | grep -Fq "available_in_store:"; then
-            metadata=$(echo "$metadata" | sed '12 a available_in_store: True')
-          fi
-          newSha=$(echo "$metadata" | sha256sum | awk '{ print $1 }')
-          if [ ! "$oldSha" = "$newSha" ]; then
-            { echo "---"; echo "$metadata"; echo "---"; echo "$nonMetadata"; } > "docs/_plugins/${{ matrix.plugin.name }}.md"
-            echo "hasChanges=true" >> $GITHUB_OUTPUT
-            echo "Updating ${{ matrix.plugin.name }}.md metadata"
-            cat "docs/_plugins/${{ matrix.plugin.name }}.md"
-          fi
-
-      # - name: Check if ${{ matrix.plugin.name }} has new data
-      #   if: ${{ steps.check-if-new.outputs.${{ matrix.plugin.name }}_isNew != true }}
-      #   id: check-if-update
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            var fs = require('fs')
+            fs.readFile('docs/_plugins/${{ matrix.plugin.name }}.md', 'utf-8', function (err, data){
+              if (err) throw err;
+              console.log(data)
+            })
+      # - name: Fix local page metadata
+      #   id: update_local
+      #   if: ${{ ! steps.check_local.outputs.isNew }}
       #   run: |
-            # echo Check if the plugin metadata matches the store data or not
-      # - name: Update or create ${{ matrix.plugin.name }} page
-      #   run: |
-      #     if [ -f "docs/_plugins/${{ matrix.plugin.name }}.md" ]; then
-      #       sed -i 's/description:.*/description: ${{ matrix.plugin.description }}/g' "docs/_plugins/${{ matrix.plugin.name }}.md"
-      #       sed -i 's/tags:.*/tags: ${{ matrix.plugin.tags }}/g' "docs/_plugins/${{ matrix.plugin.name }}.md"
-      #       sed -i 's/versions:.*/versions: ${{ matrix.plugin.versions }}/g' "docs/_plugins/${{ matrix.plugin.name }}.md"
-      #       sed -i 's/image_url:.*/image_url: ${{ matrix.plugin.image_url }}/g' "docs/_plugins/${{ matrix.plugin.name }}.md"
-      #       sed -i 's/created:.*/created: ${{ matrix.plugin.created }}/g' "docs/_plugins/${{ matrix.plugin.name }}.md"
-      #       sed -i 's/updated:.*/updated: ${{ matrix.plugin.updated }}/g' "docs/_plugins/${{ matrix.plugin.name }}.md"
-      #       echo Updated ${{ matrix.plugin.name }} page
+      #     tags=$(echo ${{ toJson(matrix.plugins.tags) }})
+      #     versions=$(echo ${{ toJson(matrix.plugins.versions) }})
+      #     metadata="$(awk 'BEGIN {p=0}; /---/ {p = ! p; next}; p { print }' docs/_plugins/${{ matrix.plugin.name }}.md)"
+      #     nonMetadata="$(awk 'BEGIN {p=1}; /---/ {p = ! p; next}; p { print }' docs/_plugins/${{ matrix.plugin.name }}.md)"
+      #     oldSha=$(echo "$metadata" | sha256sum | awk '{ print $1 }')
+      #     if echo "$metadata" | grep -Fq "description:"; then
+      #       metadata=$(echo "$metadata" | sed 's/description:.*/description: '"${{ matrix.plugin.description }}"'/g')
       #     else
-      #       cat >"docs/_plugins/${{ matrix.plugin.name }}.md" <<EOL
-      #       ---
-      #       layout: plugin
-      #       name: ${{ matrix.plugin.name }}
-      #       description: ${{ matrix.plugin.description }}
-      #       tags: ${{ matrix.plugin.tags }}
-      #       versions: ${{ matrix.plugin.versions }}
-      #       image_url: ${{ matrix.plugin.image_url }}
-      #       created: ${{ matrix.plugin.created }}
-      #       updated: ${{ matrix.plugin.updated }}
-      #       package_name: 
-      #       project_url: 
-      #       category: Active
-      #       available_in_store: True
-      #       ---
-      #       {\% assign store = site.data.store | where: "name", page.name | first \%}
-      #       EOL
-      #       echo Generated new ${{ matrix.plugin.name }} page
+      #       metadata=$(echo "$metadata" | sed '3 a description: '"${{ matrix.plugin.description }}")
+      #     fi
+      #     echo Updated description
+      #     if echo "$metadata" | grep -Fq "tags:"; then
+      #       metadata=$(echo "$metadata" | sed 's/tags:.*/tags: '"$tags"'/g')
+      #     else
+      #       metadata=$(echo "$metadata" | sed '4 a tags: '"$tags")
+      #     fi
+      #     echo Updated tags
+      #     if echo "$metadata" | grep -Fq "versions:"; then
+      #       metadata=$(echo "$metadata" | sed 's/versions:.*/versions: '"$versions"'/g')
+      #     else
+      #       metadata=$(echo "$metadata" | sed '5 a versions: '"$versions")
+      #     fi
+      #     echo Updated versions
+      #     if echo "$metadata" | grep -Fq "image_url:"; then
+      #       metadata=$(echo "$metadata" | sed 's/image_url:.*/image_url: '"${{ matrix.plugin.image_url }}"'/g')
+      #     else
+      #       metadata=$(echo "$metadata" | sed '6 a image_url: '"${{ matrix.plugin.image_url }}")
+      #     fi
+      #     echo updated image_url
+      #     if echo "$metadata" | grep -Fq "created:"; then
+      #       metadata=$(echo "$metadata" | sed 's/created:.*/created: '"${{ matrix.plugin.created }}"'/g')
+      #     else
+      #       metadata=$(echo "$metadata" | sed '7 a created: '"${{ matrix.plugin.created }}")
+      #     fi
+      #     echo Updated created date
+      #     if echo "$metadata" | grep -Fq "updated:"; then
+      #       metadata=$(echo "$metadata" | sed 's/updated:.*/updated: '"${{ matrix.plugin.updated }}"'/g')
+      #     else
+      #       metadata=$(echo "$metadata" | sed '8 a updated: '"${{ matrix.plugin.updated }}")
+      #     fi
+      #     echo Updated last updated date
+      #     if ! echo "$metadata" | grep -Fq "package_name:"; then
+      #       metadata=$(echo "$metadata" | sed '9 a package_name: ')
+      #     fi
+      #     if ! echo "$metadata" | grep -Fq "project_url:"; then
+      #       metadata=$(echo "$metadata" | sed '10 a project_url: ')
+      #     fi
+      #     if ! echo "$metadata" | grep -Fq "category:"; then
+      #       metadata=$(echo "$metadata" | sed '11 a category: Active')
+      #     fi
+      #     if ! echo "$metadata" | grep -Fq "available_in_store:"; then
+      #       metadata=$(echo "$metadata" | sed '12 a available_in_store: True')
+      #     fi
+      #     newSha=$(echo "$metadata" | sha256sum | awk '{ print $1 }')
+      #     if [ ! "$oldSha" = "$newSha" ]; then
+      #       { echo "---"; echo "$metadata"; echo "---"; echo "$nonMetadata"; } > "docs/_plugins/${{ matrix.plugin.name }}.md"
+      #       echo "hasChanges=true" >> $GITHUB_OUTPUT
+      #       echo "Updating ${{ matrix.plugin.name }}.md metadata"
+      #       cat "docs/_plugins/${{ matrix.plugin.name }}.md"
       #     fi
       - name: Upload page artifact
         if: ${{ steps.check_local.outputs.isNew || steps.update_local.outputs.hasChanges }}
