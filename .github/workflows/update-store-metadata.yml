@@ -107,7 +107,7 @@ jobs:
             }
 
             console.log(tagsJson)
-            for (let tag on tagsJson) {
+            for (let tag of tagsJson) {
               console.log(tag)
             }
             // let fileSplit = localData.split('---\n')
