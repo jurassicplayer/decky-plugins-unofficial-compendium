@@ -97,8 +97,8 @@ jobs:
             var utils = require('.github/workflows/utils/workflow.js')
             let storeData = ''
             let localData = ''
-            let tagsJson = `${{ toJson(matrix.plugin.tags) }}`
-            let versionsJson = `${{ toJson(matrix.plugin.versions) }}`
+            let tagsJson = ${{ toJson(matrix.plugin.tags) }}
+            let versionsJson = ${{ toJson(matrix.plugin.versions) }}
             try {
               storeData = fs.readFileSync('docs/_plugins/${{ matrix.plugin.name }}.store.md', 'utf-8')
               localData = fs.readFileSync('docs/_plugins/${{ matrix.plugin.name }}.md', 'utf-8')
