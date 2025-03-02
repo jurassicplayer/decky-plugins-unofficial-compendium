@@ -94,7 +94,7 @@ jobs:
           result-encoding: string
           script: |
             var fs = require('fs')
-            var utils = require('.github/workflows/utils/workflow.js')
+            // var utils = require('.github/workflows/utils/workflow.js')
             let storeData = ''
             let localData = ''
             let tagsJson = ${{ toJson(matrix.plugin.tags) }}
