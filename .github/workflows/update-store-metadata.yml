@@ -30,7 +30,7 @@ jobs:
       - name: Load local store data
         id: set-matrix
         if: ${{ steps.compare.outputs.isNew }}
-        run: echo "matrix=$(jq -c . < docs/_data/store.json)" >> $GITHUB_OUTPUT
+        run: echo "matrix=$(jq -c .[] < docs/_data/store.json)" >> $GITHUB_OUTPUT
       - name: Upload store artifact
         if: ${{ steps.compare.outputs.isNew }}
         uses: actions/upload-artifact@v4
