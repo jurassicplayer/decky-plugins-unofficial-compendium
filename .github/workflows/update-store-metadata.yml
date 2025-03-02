@@ -30,7 +30,7 @@ jobs:
       - name: Load local store data
         id: set-matrix
         if: ${{ steps.compare.outputs.isNew }}
-        run: echo "matrix=$(jq -c .[] < docs/_data/store.json)" >> $GITHUB_OUTPUT
+        run: echo "matrix=$(jq -c . < docs/_data/store.json)" >> $GITHUB_OUTPUT
       - name: Upload store artifact
         if: ${{ steps.compare.outputs.isNew }}
         uses: actions/upload-artifact@v4
@@ -94,8 +94,11 @@ jobs:
           result-encoding: string
           script: |
             var fs = require('fs')
+            var utils = require('.github/workflows/utils/workflow.js')
             let storeData = ''
             let localData = ''
+            let tagsJson = `${{ toJson(matrix.plugin.tags) }}`
+            let versionsJson = `${{ toJson(matrix.plugin.versions) }}`
             try {
               storeData = fs.readFileSync('docs/_plugins/${{ matrix.plugin.name }}.store.md', 'utf-8')
               localData = fs.readFileSync('docs/_plugins/${{ matrix.plugin.name }}.md', 'utf-8')
@@ -103,36 +106,40 @@ jobs:
               console.error(err)
             }
 
-            let fileSplit = localData.split('---\n')
-            let sMetadata = ""
-            let nonMetadata = []
-            console.log(`Split local file into parts`)
-            if (fileSplit.length >= 3) {
-              sMetadata = fileSplit[1]
-              nonMetadata = fileSplit.splice(1,1)
-            } else {
-              nonMetadata = fileSplit
+            console.log(tagsJson)
+            for (let tag on tagsJson) {
+              console.log(tag)
             }
-            let metadata = []
-            console.log(`Replace old metadata with new metadata`)
-            let oldMetadata = sMetadata.split('\n')
-            let newMetadata = storeData.split('\n')
-            for (let newData of newMetadata) {
-              let field = newData.split(":")[0]
-              let oldData = oldMetadata.find(data => data.split(":")[0] == field)
-              if (field != 'project_url'){
-                metadata.push(newData)
-                oldMetadata = oldMetadata.filter(data => data != oldData)
-              } else if (field == 'project_url'){
-                metadata.push(oldData)
-                oldMetadata = oldMetadata.filter(data => data != oldData)
-              }
-            }
-            console.log(`Append remaining old metadata`)
-            for (let remainingData of oldMetadata) {
-              metadata.push(remainingData)
-            }
-            console.log(metadata)
+            // let fileSplit = localData.split('---\n')
+            // let sMetadata = ""
+            // let nonMetadata = []
+            // console.log(`Split local file into parts`)
+            // if (fileSplit.length >= 3) {
+            //   sMetadata = fileSplit[1]
+            //   nonMetadata = fileSplit.splice(1,1)
+            // } else {
+            //   nonMetadata = fileSplit
+            // }
+            // let metadata = []
+            // console.log(`Replace old metadata with new metadata`)
+            // let oldMetadata = sMetadata.split('\n')
+            // let newMetadata = storeData.split('\n')
+            // for (let newData of newMetadata) {
+            //   let field = newData.split(":")[0]
+            //   let oldData = oldMetadata.find(data => data.split(":")[0] == field)
+            //   if (field != 'project_url'){
+            //     metadata.push(newData)
+            //     oldMetadata = oldMetadata.filter(data => data != oldData)
+            //   } else if (field == 'project_url'){
+            //     metadata.push(oldData)
+            //     oldMetadata = oldMetadata.filter(data => data != oldData)
+            //   }
+            // }
+            // console.log(`Append remaining old metadata`)
+            // for (let remainingData of oldMetadata) {
+            //   metadata.push(remainingData)
+            // }
+            // console.log(metadata)
 
 
       # - name: Fix local page metadata
