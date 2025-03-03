@@ -1,5 +1,6 @@
 ---
 layout: plugin
+id: AutoSuspend
 title: AutoSuspend
 project_url: https://github.com/jurassicplayer/decky-autosuspend
 category: Active
