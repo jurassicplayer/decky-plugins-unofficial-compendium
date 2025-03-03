@@ -64,6 +64,7 @@ jobs:
         uses: actions/cache@v4
         with:
           key: store.json
+          path: docs/_data/store.json
       - name: Check local for ${{ matrix.plugin.name }} page
         id: check_local
         run: |
