@@ -37,7 +37,7 @@ jobs:
         if: ${{ steps.compare.outputs.isNew }}
         uses: actions/upload-artifact@v4
         with:
-          name: store.json
+          name: store_json
           path: docs/_data/store.json
       # START Remove cache when action/download-artifact isn't broken
       - name: Cache store artifact
@@ -64,7 +64,7 @@ jobs:
       - name: Download latest store.json artifact
         uses: actions/download-artifact@v3
         with:
-          name: store.json
+          name: store_json
           path: docs/_data/store.json
       # START Remove cache when action/download-artifact isn't broken
       - name: Un-Cache store artifact
@@ -113,13 +113,13 @@ jobs:
         if: ${{ steps.check_local.outputs.isNew || steps.check_cache.outputs.hasChanges }}
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.plugin.name }}.json
+          name: ${{ matrix.plugin.name }}_json
           path: docs/_data/${{ matrix.plugin.name }}.json
       - name: Upload page artifact
         if: ${{ steps.check_local.outputs.isNew || steps.check_cache.outputs.hasChanges }}
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.plugin.name }}.md
+          name: ${{ matrix.plugin.name }}_md
           path: docs/_plugins/${{ matrix.plugin.name }}.md
           
 
@@ -131,13 +131,13 @@ jobs:
         if: ${{ steps.update_or_create_pages.outputs.isNew == 'true' || steps.update_or_create_pages.outputs.hasChanges == 'true' }}
         uses: actions/download-artifact@v3
         with:
-          pattern: *.md
+          pattern: *_md
           path: docs/_plugins
       - name: Download json artifacts
         if: ${{ steps.update_or_create_pages.outputs.isNew == 'true' || steps.update_or_create_pages.outputs.hasChanges == 'true' }}
         uses: actions/download-artifact@v3
         with:
-          pattern: *.json
+          pattern: *_json
           path: docs/_data
       # - name: Create or Update Pull Request
       #   if: ${{ steps.update_or_create_pages.outputs.isNew == 'true' || steps.update_or_create_pages.outputs.hasChanges == 'true' }}
