@@ -1,14 +1,14 @@
 ---
 layout: page
 ---
-{% assign store = site.data.store | where: "name", page.title | first %}
+{% assign store = site.data[page.title] %}
 
 <div class="pluginCard">
   {{ page.title }}
   {{ page.package_name }}
   {{ page.project_url }}
   {{ page.category }}
-  {{ store.downloads }}
+  {{ store.description }}
 </div>
 
 <div class="customPluginPage">
