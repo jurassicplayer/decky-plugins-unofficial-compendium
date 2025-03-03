@@ -50,6 +50,7 @@ jobs:
   update_or_create_pages:
     needs: query_store
     runs-on: ubuntu-latest
+    if: ${{ needs.query_store.outputs.isNew }}
     outputs:
       isNew: ${{ steps.check_local.outputs.isNew }}
       hasChanges: ${{ steps.check_cache.outputs.hasChanges }}
@@ -126,21 +127,19 @@ jobs:
   create_pr:
     needs: update_or_create_pages
     runs-on: ubuntu-latest
+    if: ${{ needs.update_or_create_pages.outputs.isNew == 'true' || needs.update_or_create_pages.outputs.hasChanges == 'true' }}
     steps:
       - name: Download plugin page artifacts
-        if: ${{ steps.update_or_create_pages.outputs.isNew == 'true' || steps.update_or_create_pages.outputs.hasChanges == 'true' }}
         uses: actions/download-artifact@v3
         with:
           pattern: md-*
           path: docs/_plugins
       - name: Download json artifacts
-        if: ${{ steps.update_or_create_pages.outputs.isNew == 'true' || steps.update_or_create_pages.outputs.hasChanges == 'true' }}
         uses: actions/download-artifact@v3
         with:
           pattern: json-*
           path: docs/_data
       # - name: Create or Update Pull Request
-      #   if: ${{ steps.update_or_create_pages.outputs.isNew == 'true' || steps.update_or_create_pages.outputs.hasChanges == 'true' }}
       #   uses: gr2m/create-or-update-pull-request-action@v1.10.1
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
