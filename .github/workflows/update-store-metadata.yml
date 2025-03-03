@@ -39,15 +39,20 @@ jobs:
         with:
           name: store.json
           path: docs/_data/store.json
+      # START Remove cache when action/download-artifact isn't broken
       - name: Cache store artifact
         if: ${{ steps.compare.outputs.isNew }}
         uses: actions/cache@v4
         with:
           key: store.json
           path: docs/_data/store.json
+      # END
   update_or_create_pages:
     needs: query_store
     runs-on: ubuntu-latest
+    outputs:
+      isNew: ${{ steps.check_local.outputs.isNew }}
+      hasChanges: ${{ steps.check_cache.outputs.hasChanges }}
     strategy:
       matrix:
         plugin: ${{ fromJson(needs.query_store.outputs.matrix) }}
@@ -56,17 +61,19 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
-      # - name: Download latest store.json artifact
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: store.json
-      #     path: docs/_data/store.json
+      - name: Download latest store.json artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: store.json
+          path: docs/_data/store.json
+      # START Remove cache when action/download-artifact isn't broken
       - name: Un-Cache store artifact
         id: store-artifact
         uses: actions/cache@v4
         with:
           key: store.json
           path: docs/_data/store.json
+      # END
       - name: Check local for ${{ matrix.plugin.name }} page
         id: check_local
         run: |
@@ -109,26 +116,38 @@ jobs:
           name: ${{ matrix.plugin.name }}.json
           path: docs/_data/${{ matrix.plugin.name }}.json
       - name: Upload page artifact
-        if: ${{ steps.check_local.outputs.isNew || steps.update_local.outputs.hasChanges }}
+        if: ${{ steps.check_local.outputs.isNew || steps.check_cache.outputs.hasChanges }}
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.plugin.name }}.md
           path: docs/_plugins/${{ matrix.plugin.name }}.md
           
 
-  # create_pr:
-  #   needs: update_or_create_pages
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Create or Update Pull Request
-  #       if: ${{ steps.update_or_create_pages.outputs.isNew == 'true' }}
-  #       uses: gr2m/create-or-update-pull-request-action@v1.10.1
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       with:
-  #         branch: "workflows-update-store"
-  #         commit-message: "chore: update store.json"
-  #         auto-merge: merge
-  #         labels: automerge
-  #         update-pull-request-title-and-body: true
+  create_pr:
+    needs: update_or_create_pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download plugin page artifacts
+        if: ${{ steps.update_or_create_pages.outputs.isNew == 'true' || steps.update_or_create_pages.outputs.hasChanges == 'true' }}
+        uses: actions/download-artifact@v3
+        with:
+          pattern: *.md
+          path: docs/_plugins
+      - name: Download json artifacts
+        if: ${{ steps.update_or_create_pages.outputs.isNew == 'true' || steps.update_or_create_pages.outputs.hasChanges == 'true' }}
+        uses: actions/download-artifact@v3
+        with:
+          pattern: *.json
+          path: docs/_data
+      # - name: Create or Update Pull Request
+      #   if: ${{ steps.update_or_create_pages.outputs.isNew == 'true' || steps.update_or_create_pages.outputs.hasChanges == 'true' }}
+      #   uses: gr2m/create-or-update-pull-request-action@v1.10.1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     branch: "workflows-update-store"
+      #     commit-message: "chore: update store metadata"
+      #     auto-merge: merge
+      #     labels: automerge
+      #     update-pull-request-title-and-body: true
       
