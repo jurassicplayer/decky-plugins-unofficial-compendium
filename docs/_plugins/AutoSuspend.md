@@ -9,4 +9,5 @@ available_in_store: True
 {% assign store = site.data[page.title] %}
 
 {{ store | json }}
+{{ site | json }}
 All this cool text with nothing fancy

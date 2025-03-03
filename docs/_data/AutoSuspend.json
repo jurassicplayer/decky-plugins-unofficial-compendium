@@ -6,7 +6,8 @@
     "battery",
     "power-management",
     "suspend",
-    "utility"
+    "utility",
+    "root"
   ],
   "versions": [
     {
