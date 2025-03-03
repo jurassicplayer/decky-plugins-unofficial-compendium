@@ -24,6 +24,8 @@ jobs:
       - name: Compare hashes
         id: compare
         run: |
+          echo $STORE_SHA
+          echo $NEW_STORE_SHA
           if [[ "$STORE_SHA" != "$NEW_STORE_SHA" ]]; then
             echo "isNew=true" >> $GITHUB_OUTPUT
           fi
@@ -91,6 +93,8 @@ jobs:
         run: |
           CACHE_SHA=$(sha256sum docs/_data/${{ matrix.plugin.name }}.json)
           NEW_CACHE_SHA=$(cat docs/_data/store.json | jq 'first (.[] | select( .name == "${{ matrix.plugin.name }}"))' | sha256sum)
+          echo $CACHE_SHA
+          echo $NEW_CACHE_SHA
           if [[ "$CACHE_SHA" != "$NEW_CACHE_SHA" ]]; then
             echo "hasChanges=true" >> $GITHUB_OUTPUT
           fi
