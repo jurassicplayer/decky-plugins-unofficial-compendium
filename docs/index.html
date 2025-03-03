@@ -3,61 +3,34 @@ layout: default
 title: plugins
 permalink: /
 description: Listing of Decky Plugins
-display_categories: [Active, Inactive, Unmaintained, Abandoned]
-horizontal: false
 ---
-
 <!-- pages/plugins.md -->
 <div class="plugins">
-{% if site.enable_project_categories and page.display_categories %}
+{% if site.enable_project_categories and site.display_categories %}
   <!-- Display categorized plugins -->
-  {% for category in page.display_categories %}
-  <a id="{{ category }}" href=".#{{ category }}">
-    <h2 class="category">{{ category }}</h2>
-  </a>
+  {% for category in site.display_categories %}
   {% assign categorized_plugins = site.plugins | where: "category", category %}
-  {% assign sorted_plugins = categorized_plugins %}
-  <!-- Generate cards for each project -->
-  {% if page.horizontal %}
-  <div class="container">
-    <div class="row row-cols-1 row-cols-md-2">
-    {% for plugin in sorted_plugins %}
-      {% include plugins_horizontal.liquid %}
-    {% endfor %}
+  <div class="card mx-4 my-4 text-white">
+    <div class="card-body" style="justify-content:center">
+      <h2 id="{{ category }}" class="card-title">{{ category }}</h2>
+      <!-- Generate cards for each project -->
+        {% for plugin in categorized_plugins %}
+          {% include card.liquid %}
+        {% endfor %}
     </div>
   </div>
-  {% else %}
-  <div class="row row-cols-1 row-cols-md-3">
-    {% for plugin in sorted_plugins %}
-      {% include plugins.liquid %}
-    {% endfor %}
-  </div>
-  {% endif %}
   {% endfor %}
 
 {% else %}
 
-<!-- Display plugins without categories -->
-
-{% assign sorted_plugins = site.plugins %}
+  <!-- Display plugins without categories -->
+  {% assign sorted_plugins = site.plugins %}
 
   <!-- Generate cards for each project -->
-
-{% if page.horizontal %}
-
-  <div class="container">
-    <div class="row row-cols-1 row-cols-md-2">
+  <div class="pure-g is-center">
     {% for plugin in sorted_plugins %}
-      {% include plugins_horizontal.liquid %}
-    {% endfor %}
-    </div>
-  </div>
-  {% else %}
-  <div class="row row-cols-1 row-cols-md-3">
-    {% for plugin in sorted_plugins %}
-      {% include plugins.liquid %}
+      {% include card.liquid %}
     {% endfor %}
   </div>
-  {% endif %}
 {% endif %}
 </div>

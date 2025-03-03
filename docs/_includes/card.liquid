@@ -1,0 +1,86 @@
+<style>
+a.nostyle:link, a.nostyle:visited {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
+.card {
+  background: #2a2a33;
+}
+
+.card.plugin {
+  background: #444;
+}
+/* .card {
+  background: #333;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border-radius: 0.5em;
+  max-width: 90%;
+  margin: 0.5em 0 0.5em 0;
+} */
+/* .tag {
+  background: #CFE2FF;
+  color: #1A449A;
+  border-radius: 0.3em;
+  padding: 0.05em 0.5em 0.05em 0.5em;
+  margin: 0.1em;
+} */
+
+/* Add rounded corners to the top left and the top right corner of the image */
+/* img {
+  border-radius: 0.5em 0 0 0.5em;
+} */
+
+/* On mouse-over, add a deeper shadow */
+/* .card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+} */
+
+/* Add some padding inside the card container */
+/* .container {
+  padding: 2px 16px; */
+}
+
+/* @media (max-width: 47.999em) {
+  img {
+    border-radius: 0.5em 0.5em 0 0;
+  }
+} */
+</style>
+
+{% assign store = site.data[plugin.title] %}
+{% assign name = plugin.title | default: store.name %}
+{% assign author = plugin.author | default: store.author %}
+{% assign description = plugin.description | default: store.description %}
+{% assign tags = plugin.tags | default: store.tags %}
+{% assign versions = plugin.versions | default: store.versions %}
+{% assign image_url = plugin.image_url | default: store.image_url %}
+{% assign created = plugin.created | default: store.created %}
+{% assign updated = plugin.updated | default: store.updated %}
+
+<div class="card plugin my-1 text-white">
+  <a class="nostyle" href="{% if plugin.redirect %}{{ plugin.redirect }}{% else %}{{ plugin.url | relative_url }}{% endif %}">
+    <div class="row">
+      <div class="col-3">
+        <img class="img-fluid rounded-start object-fit-contain" src="{{ image_url }}" alt="{{ name }}">
+      </div>
+      <div class="col align-content-center">
+        <h5 class="card-title">{{ name }}</h5>
+        <p class="card-text">
+          <span class="badge text-bg-secondary">Author: {{ author }}</span>
+          {% if tags contains "root"  %}
+            <span class="badge text-bg-danger">Requires root</span>
+          {% endif %}
+        </p>
+        <p class="card-text">
+          {% for tag in tags %}
+            <span class="badge text-bg-primary">{{ tag }}</span>
+          {% endfor %}
+        </p>
+        <p class="card-text">{{ description }}</p>
+      </div>
+    </div>
+  </a>
+</div>
