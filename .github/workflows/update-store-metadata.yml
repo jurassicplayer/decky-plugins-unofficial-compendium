@@ -85,7 +85,7 @@ jobs:
             echo '{\% assign store = site.data\[${{ matrix.plugin.name }}\] \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo Generated new ${{ matrix.plugin.name }} page
           fi
-      - name: Update cached ${{ matrix.plugin.name }}.json (to preserve data if plugin is removed from the store)
+      - name: Check cached AutoSuspend.json for changes
         if: ${{ ! steps.check_local.outputs.isNew }}
         id: check_cache
         run: |
