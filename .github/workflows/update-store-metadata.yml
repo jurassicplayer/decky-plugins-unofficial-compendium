@@ -37,6 +37,12 @@ jobs:
         with:
           name: store.json
           path: docs/_data/store.json
+      - name: Cache store artifact
+        if: ${{ steps.compare.outputs.isNew }}
+        uses: actions/cache@v4
+        with:
+          key: store.json
+          path: docs/_data/store.json
   update_or_create_pages:
     needs: query_store
     runs-on: ubuntu-latest
@@ -48,11 +54,16 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
-      - name: Download latest store.json artifact
-        uses: actions/download-artifact@v4
+      # - name: Download latest store.json artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: store.json
+      #     path: docs/_data/store.json
+      - name: Un-Cache store artifact
+        id: store-artifact
+        uses: actions/cache@v4
         with:
-          name: store.json
-          path: docs/_data/store.json
+          key: store.json
       - name: Check local for ${{ matrix.plugin.name }} page
         id: check_local
         run: |
