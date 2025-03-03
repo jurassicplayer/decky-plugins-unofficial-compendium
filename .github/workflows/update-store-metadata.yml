@@ -16,11 +16,11 @@ jobs:
         with:
           persist-credentials: false
       - name: Hash local store data
-        run: echo "STORE_SHA=$(sha256sum docs/_data/store.json)" >> $GITHUB_ENV
+        run: echo "STORE_SHA=$(sha256sum docs/_data/store.json | awk '{ print $1 }')" >> $GITHUB_ENV
       - name: Poll and hash fresh store data
         run: |
           curl https://plugins.deckbrew.xyz/plugins | jq 'walk(if type == "object" then with_entries(select(.key | test("id") or test("downloads") or test("updates") | not)) else . end)' > docs/_data/store.json
-          echo "NEW_STORE_SHA=$(sha256sum docs/_data/store.json)" >> $GITHUB_ENV
+          echo "NEW_STORE_SHA=$(sha256sum docs/_data/store.json | awk '{ print $1 }')" >> $GITHUB_ENV
       - name: Compare hashes
         id: compare
         run: |
@@ -91,8 +91,8 @@ jobs:
         if: ${{ ! steps.check_local.outputs.isNew }}
         id: check_cache
         run: |
-          CACHE_SHA=$(sha256sum docs/_data/${{ matrix.plugin.name }}.json)
-          NEW_CACHE_SHA=$(cat docs/_data/store.json | jq 'first (.[] | select( .name == "${{ matrix.plugin.name }}"))' | sha256sum)
+          CACHE_SHA=$(sha256sum docs/_data/${{ matrix.plugin.name }}.json | awk '{ print $1 }')
+          NEW_CACHE_SHA=$(cat docs/_data/store.json | jq 'first (.[] | select( .name == "${{ matrix.plugin.name }}"))' | sha256sum | awk '{ print $1 }')
           echo $CACHE_SHA
           echo $NEW_CACHE_SHA
           if [[ "$CACHE_SHA" != "$NEW_CACHE_SHA" ]]; then
