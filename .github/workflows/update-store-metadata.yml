@@ -61,85 +61,77 @@ jobs:
             echo --- > "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo layout: plugin >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo name: "${{ matrix.plugin.name }}" >> "docs/_plugins/${{ matrix.plugin.name }}.md"
-            echo description: "${{ matrix.plugin.description }}" >> "docs/_plugins/${{ matrix.plugin.name }}.md"
-            echo tags: "${{ toJson(matrix.plugin.tags) }}" >> "docs/_plugins/${{ matrix.plugin.name }}.md"
-            echo versions: "${{ toJson(matrix.plugin.versions) }}" >> "docs/_plugins/${{ matrix.plugin.name }}.md"
-            echo image_url: ${{ matrix.plugin.image_url }} >> "docs/_plugins/${{ matrix.plugin.name }}.md"
-            echo created: ${{ matrix.plugin.created }} >> "docs/_plugins/${{ matrix.plugin.name }}.md"
-            echo updated: ${{ matrix.plugin.updated }} >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo 'project_url: ' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo category: Active >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo available_in_store: True >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo --- >> "docs/_plugins/${{ matrix.plugin.name }}.md"
-            echo '{\% assign store = site.data.store | where: "name", page.name | first \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign store = site.data\[${{ matrix.plugin.name }}\] \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo Generated new ${{ matrix.plugin.name }} page
           fi
-      - name: Create temporary ${{ matrix.plugin.name}}.store.md
-        run: |
-          echo layout: plugin >> "docs/_plugins/${{ matrix.plugin.name}}.store.md"
-          echo name: "${{ matrix.plugin.name }}" >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
-          echo description: "${{ matrix.plugin.description }}" >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
-          echo tags: "${{ toJson(matrix.plugin.tags) }}" | sed 's/["\n\r]//g' >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
-          echo versions: "${{ toJson(matrix.plugin.versions) }}" | sed 's/["\n\r]//g'  >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
-          echo image_url: ${{ matrix.plugin.image_url }} >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
-          echo created: ${{ matrix.plugin.created }} >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
-          echo updated: ${{ matrix.plugin.updated }} >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
-          echo 'project_url: ' >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
-          echo category: Active >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
-          echo available_in_store: True >> "docs/_plugins/${{ matrix.plugin.name }}.store.md"
-      - name: Fix local metadata for ${{ matrix.plugin.name }} page
+      - name: Update cached ${{ matrix.plugin.name }}.json (to preserve data if plugin is removed from the store)
         if: ${{ ! steps.check_local.outputs.isNew }}
-        uses: actions/github-script@v7
-        with:
-          result-encoding: string
-          script: |
-            var fs = require('fs')
-            // var utils = require('.github/workflows/utils/workflow.js')
-            let storeData = ''
-            let localData = ''
-            let tagsJson = ${{ toJson(matrix.plugin.tags) }}
-            let versionsJson = ${{ toJson(matrix.plugin.versions) }}
-            try {
-              storeData = fs.readFileSync('docs/_plugins/${{ matrix.plugin.name }}.store.md', 'utf-8')
-              localData = fs.readFileSync('docs/_plugins/${{ matrix.plugin.name }}.md', 'utf-8')
-            } catch (err) {
-              console.error(err)
-            }
+        id: check_cache
+        run: |
+          CACHE_SHA=$(sha256sum docs/_data/${{ matrix.plugin.name }}.json)
+          NEW_CACHE_SHA=$(echo "${{ toJson(matrix.plugin) }}" | sha256sum)
+          if [[ "$CACHE_SHA" != "$NEW_CACHE_SHA" ]]; then
+            echo "hasChanges=true" >> $GITHUB_OUTPUT
+          fi
+      - name: Create or update cached ${{ matrix.plugin.name }}.json (to preserve data if plugin is removed from the store)
+        if: ${{ steps.check_local.outputs.isNew || steps.check_cache.outputs.hasChanges }}
+        run: |
+          echo "${{ toJson(matrix.plugin) }}" > "docs/_data/${{ matrix.plugin.name }}.json"
+      # - name: Fix local metadata for ${{ matrix.plugin.name }} page
+      #   if: ${{ ! steps.check_local.outputs.isNew }}
+      #   uses: actions/github-script@v7
+      #   with:
+      #     result-encoding: string
+      #     script: |
+      #       var fs = require('fs')
+      #       // var utils = require('.github/workflows/utils/workflow.js')
+      #       let storeData = ''
+      #       let localData = ''
+      #       let tagsJson = ${{ toJson(matrix.plugin.tags) }}
+      #       let versionsJson = ${{ toJson(matrix.plugin.versions) }}
+      #       try {
+      #         storeData = fs.readFileSync('docs/_plugins/${{ matrix.plugin.name }}.store.md', 'utf-8')
+      #         localData = fs.readFileSync('docs/_plugins/${{ matrix.plugin.name }}.md', 'utf-8')
+      #       } catch (err) {
+      #         console.error(err)
+      #       }
 
-            console.log(tagsJson)
-            for (let tag of tagsJson) {
-              console.log(tag)
-            }
-            // let fileSplit = localData.split('---\n')
-            // let sMetadata = ""
-            // let nonMetadata = []
-            // console.log(`Split local file into parts`)
-            // if (fileSplit.length >= 3) {
-            //   sMetadata = fileSplit[1]
-            //   nonMetadata = fileSplit.splice(1,1)
-            // } else {
-            //   nonMetadata = fileSplit
-            // }
-            // let metadata = []
-            // console.log(`Replace old metadata with new metadata`)
-            // let oldMetadata = sMetadata.split('\n')
-            // let newMetadata = storeData.split('\n')
-            // for (let newData of newMetadata) {
-            //   let field = newData.split(":")[0]
-            //   let oldData = oldMetadata.find(data => data.split(":")[0] == field)
-            //   if (field != 'project_url'){
-            //     metadata.push(newData)
-            //     oldMetadata = oldMetadata.filter(data => data != oldData)
-            //   } else if (field == 'project_url'){
-            //     metadata.push(oldData)
-            //     oldMetadata = oldMetadata.filter(data => data != oldData)
-            //   }
-            // }
-            // console.log(`Append remaining old metadata`)
-            // for (let remainingData of oldMetadata) {
-            //   metadata.push(remainingData)
-            // }
-            // console.log(metadata)
+      #       console.log(tagsJson)
+      #       console.log(versionsJson)
+      #       // let fileSplit = localData.split('---\n')
+      #       // let sMetadata = ""
+      #       // let nonMetadata = []
+      #       // console.log(`Split local file into parts`)
+      #       // if (fileSplit.length >= 3) {
+      #       //   sMetadata = fileSplit[1]
+      #       //   nonMetadata = fileSplit.splice(1,1)
+      #       // } else {
+      #       //   nonMetadata = fileSplit
+      #       // }
+      #       // let metadata = []
+      #       // console.log(`Replace old metadata with new metadata`)
+      #       // let oldMetadata = sMetadata.split('\n')
+      #       // let newMetadata = storeData.split('\n')
+      #       // for (let newData of newMetadata) {
+      #       //   let field = newData.split(":")[0]
+      #       //   let oldData = oldMetadata.find(data => data.split(":")[0] == field)
+      #       //   if (field != 'project_url'){
+      #       //     metadata.push(newData)
+      #       //     oldMetadata = oldMetadata.filter(data => data != oldData)
+      #       //   } else if (field == 'project_url'){
+      #       //     metadata.push(oldData)
+      #       //     oldMetadata = oldMetadata.filter(data => data != oldData)
+      #       //   }
+      #       // }
+      #       // console.log(`Append remaining old metadata`)
+      #       // for (let remainingData of oldMetadata) {
+      #       //   metadata.push(remainingData)
+      #       // }
+      #       // console.log(metadata)
 
 
       # - name: Fix local page metadata
@@ -206,6 +198,12 @@ jobs:
       #       echo "Updating ${{ matrix.plugin.name }}.md metadata"
       #       cat "docs/_plugins/${{ matrix.plugin.name }}.md"
       #     fi
+      - name: Upload ${{ matrix.plugin.name }}.json artifact
+        if: ${{ steps.check_local.outputs.isNew || steps.check_cache.outputs.hasChanges }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.plugin.name }}.json
+          path: docs/_data/${{ matrix.plugin.name }}.json
       - name: Upload page artifact
         if: ${{ steps.check_local.outputs.isNew || steps.update_local.outputs.hasChanges }}
         uses: actions/upload-artifact@v4
