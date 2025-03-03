@@ -97,7 +97,7 @@ jobs:
       - name: Create or update cached ${{ matrix.plugin.name }}.json (to preserve data if plugin is removed from the store)
         if: ${{ steps.check_local.outputs.isNew || steps.check_cache.outputs.hasChanges }}
         run: |
-          echo "${{ toJson(matrix.plugin) }}" > "docs/_data/${{ matrix.plugin.name }}.json"
+          cat docs/_data/store.json | jq 'first (.[] | select( .name == "${{ matrix.plugin.name }}"))' > "docs/_data/${{ matrix.plugin.name }}.json"
       # - name: Fix local metadata for ${{ matrix.plugin.name }} page
       #   if: ${{ ! steps.check_local.outputs.isNew }}
       #   uses: actions/github-script@v7
