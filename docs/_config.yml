@@ -1,11 +1,6 @@
 enable_project_categories: true # enables categorization of projects into multiple categories
 
-remote_theme: zendesk/jekyll-theme-zendesk-garden@main
-sidebar:
-  - label: Fancy
-    children:
-      - AutoSuspend
-
+display_categories: [Active, Inactive, Unmaintained, Abandoned]
 collections:
   plugins:
     output: true
