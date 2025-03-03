@@ -48,6 +48,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
+      - name: Download latest store.json artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: store.json
+          path: docs/_data/store.json
       - name: Check local for ${{ matrix.plugin.name }} page
         id: check_local
         run: |
@@ -73,7 +78,7 @@ jobs:
         id: check_cache
         run: |
           CACHE_SHA=$(sha256sum docs/_data/${{ matrix.plugin.name }}.json)
-          NEW_CACHE_SHA=$(echo "${{ toJson(matrix.plugin) }}" | sha256sum)
+          NEW_CACHE_SHA=$(cat docs/_data/store.json | jq 'first (.[] | select( .name == "${{ matrix.plugin.name }}"))' | sha256sum)
           if [[ "$CACHE_SHA" != "$NEW_CACHE_SHA" ]]; then
             echo "hasChanges=true" >> $GITHUB_OUTPUT
           fi
