@@ -138,6 +138,10 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ needs.update_or_create_pages.outputs.isNew == 'true' || needs.update_or_create_pages.outputs.hasChanges == 'true' }}
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       # START Remove cache when action/download-artifact isn't broken
       - name: Load Cache - Plugin page artifacts
         uses: actions/cache@v4
