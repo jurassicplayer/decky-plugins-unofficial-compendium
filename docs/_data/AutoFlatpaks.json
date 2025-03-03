@@ -1,0 +1,78 @@
+{
+  "name": "AutoFlatpaks",
+  "author": "jurassicplayer",
+  "description": "A plugin to manage, notify, and automatically update flatpaks on your steamdeck console",
+  "tags": [
+    "flatpak",
+    "package-management",
+    "root",
+    "update",
+    "utility"
+  ],
+  "versions": [
+    {
+      "name": "1.6.7",
+      "hash": "b2f447ac727a0591527b78e98d9e246dd1a8e0bced7537841fd3f858538288de",
+      "created": "2024-07-31T20:57:21Z"
+    },
+    {
+      "name": "1.6.6",
+      "hash": "c362257805a6bd3ba802082ca7b6ff31bd830eb321aecf82df532215203cba2c",
+      "created": "2024-02-05T03:16:13Z"
+    },
+    {
+      "name": "1.6.5-1",
+      "hash": "d6b86cd5b10bb031a68e54e59d0f8a19ede6fd85d5892b20c29f558348e2f771",
+      "created": "2024-01-20T03:59:20Z"
+    },
+    {
+      "name": "1.6.5",
+      "hash": "69c90568c88b58aaa0a0c987da1de00b1337c9769529eee77935b061da9ea73b",
+      "created": "2023-05-11T23:35:19Z"
+    },
+    {
+      "name": "1.6.4",
+      "hash": "f41dc67f1e4c7b8047ed0932c3ed7684ecdc7874a9798633b9eb0fa4a248f37a",
+      "created": "2023-04-04T20:05:19Z"
+    },
+    {
+      "name": "1.6.3",
+      "hash": "0bf514c34168c36a3b5604ac235357e13957576ba80edb271345922746a4d577",
+      "created": "2023-03-05T14:26:51Z"
+    },
+    {
+      "name": "1.6.1",
+      "hash": "195ece4f7e671d8523947bdba67b650da787dc17ebd5064a68a4d0e92a1a8db2",
+      "created": "2023-02-24T05:55:20Z"
+    },
+    {
+      "name": "1.6.0",
+      "hash": "a3ccb704fb49967843ff3dd9f93567612a831fd675fb6ea94b1ef9afd50cef46",
+      "created": "2023-02-19T22:49:39Z"
+    },
+    {
+      "name": "1.5.0",
+      "hash": "868ef97b3ff3fd2b202adce76d40d38bec4451b8c3f7f03ac38c3ea8b5f3a644",
+      "created": "2023-01-28T21:39:57Z"
+    },
+    {
+      "name": "1.4.1",
+      "hash": "4b83859f91e9a081296938393749fef0236d8f61a4e71d3f00b51788b5419e3e",
+      "created": "2022-12-29T14:37:42Z"
+    },
+    {
+      "name": "1.3.0",
+      "hash": "37ee1d4bcd697d4e7b1251b7344fb141e97c80d7cc3e7c8c432ceef03933c7d3",
+      "created": "2022-12-20T12:54:22Z"
+    },
+    {
+      "name": "1.0.0",
+      "hash": "dda593f9968f71ad8b7bd86674d33713a4e3881accf96833d7ecfaa481f900b7",
+      "created": "2022-12-20T12:54:21Z"
+    }
+  ],
+  "visible": true,
+  "image_url": "https://cdn.tzatzikiweeb.moe/file/steam-deck-homebrew/artifact_images/AutoFlatpaks-93dbace5a31e869ea8e1c6e822c17a8498e651d86c83a195d9bb501030321758.png",
+  "created": "2022-12-20T12:54:21Z",
+  "updated": "2024-07-31T20:57:21Z"
+}
