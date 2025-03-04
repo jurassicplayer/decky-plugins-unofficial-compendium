@@ -100,6 +100,7 @@ jobs:
             echo 'project_url: ' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo category: Active >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo available_in_store: True >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo redirect: False >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo --- >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo '{\% assign store = site.data\[${{ matrix.plugin.name }}\] \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo Generated new ${{ matrix.plugin.name }} page
