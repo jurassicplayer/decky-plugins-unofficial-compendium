@@ -63,7 +63,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Download latest store.json artifact
-        uses: actions/download-artifact@v4.1.9
+        uses: actions/download-artifact@v4.1.8
         with:
           name: json-store
           path: docs/_data/store.json
