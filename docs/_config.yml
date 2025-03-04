@@ -6,3 +6,6 @@ collections:
   plugins:
     output: true
     permalink: /:collection/:title/
+  api:
+    output: true
+    permalink: /:collection/:title/

@@ -1,0 +1,27 @@
+---
+layout: none
+---
+[
+  {%- for plugin in site.plugins %}
+    {% assign store = site.data[plugin.title] %}
+    {% assign name = plugin.title | default: store.name %}
+    {% assign author = plugin.author | default: store.author %}
+    {% assign description = plugin.description | default: store.description %}
+    {% assign tags = plugin.tags | default: store.tags %}
+    {% assign versions = plugin.versions | default: store.versions %}
+    {% assign image_url = plugin.image_url | default: store.image_url %}
+    {% assign created = plugin.created | default: store.created %}
+    {% assign updated = plugin.updated | default: store.updated %}
+    {
+      "name":        {{- name | jsonify -}},
+      "author":      {{- author | jsonify -}},
+      "description": {{- description | jsonify -}},
+      "tags":        {{- tags | jsonify -}},
+      "versions":    {{- versions | jsonify -}},
+      "image_url":   {{- image_url | jsonify -}},
+      "created":     {{- created | jsonify -}},
+      "updated":     {{- updated | jsonify -}}
+    }
+    {% unless forloop.last %},{% endunless %}
+  {% endfor -%}
+]
