@@ -100,8 +100,19 @@ jobs:
             echo 'project_url: ' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo category: Active >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo available_in_store: True >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo redirect: True >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo --- >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo '{\% assign store = site.data\[${{ matrix.plugin.name }}\] \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign store = site.data\[page.title\] \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign name = page.title | default: store.name \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign author = page.author | default: store.author \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign description = page.description | default: store.description \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign tags = page.tags | default: store.tags \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign versions = page.versions | default: store.versions \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign image_url = page.image_url | default: store.image_url \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign image_url = image_url | default: "assets/images/placeholder_screenshot.png" \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign created = page.created | default: store.created \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign updated = page.updated | default: store.updated \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo Generated new ${{ matrix.plugin.name }} page
           fi
       - name: Check cached AutoSuspend.json for changes

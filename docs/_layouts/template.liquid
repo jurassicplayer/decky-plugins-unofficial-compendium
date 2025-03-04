@@ -1,5 +1,10 @@
 ---
-layout: page
+layout: plugin
+title: template
+project_url: 
+category: Active
+available_in_store: True
+redirect: True
 ---
 {% assign store = site.data[page.title] %}
 {% assign name = page.title | default: store.name %}
@@ -11,18 +16,3 @@ layout: page
 {% assign image_url = image_url | default: "assets/images/placeholder_screenshot.png" %}
 {% assign created = page.created | default: store.created %}
 {% assign updated = page.updated | default: store.updated %}
-
-<div class="pluginCard">
-  {{ name }}
-  {{ image_url }}
-  {{ page.project_url }}
-  {{ page.category }}
-  {{ page.available_in_store }}
-  {{ description }}
-  {{ created }}
-  {{ updated }}
-</div>
-
-<div class="customPluginPage">
-  {{ page.content }}
-</div>

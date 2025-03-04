@@ -2,52 +2,15 @@
 a.nostyle:link, a.nostyle:visited {
     text-decoration: inherit;
     color: inherit;
-    cursor: auto;
 }
-
-.card {
-  background: #2a2a33;
-}
-
 .card.plugin {
-  background: #444;
-}
-/* .card {
-  background: #333;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
   transition: 0.3s;
-  border-radius: 0.5em;
-  max-width: 90%;
-  margin: 0.5em 0 0.5em 0;
-} */
-/* .tag {
-  background: #CFE2FF;
-  color: #1A449A;
-  border-radius: 0.3em;
-  padding: 0.05em 0.5em 0.05em 0.5em;
-  margin: 0.1em;
-} */
-
-/* Add rounded corners to the top left and the top right corner of the image */
-/* img {
-  border-radius: 0.5em 0 0 0.5em;
-} */
-
-/* On mouse-over, add a deeper shadow */
-/* .card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-} */
-
-/* Add some padding inside the card container */
-/* .container {
-  padding: 2px 16px; */
 }
-
-/* @media (max-width: 47.999em) {
-  img {
-    border-radius: 0.5em 0.5em 0 0;
-  }
-} */
+/* On mouse-over, add a deeper shadow */
+.card.plugin:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6);
+}
 </style>
 
 {% assign store = site.data[plugin.title] %}
@@ -57,11 +20,12 @@ a.nostyle:link, a.nostyle:visited {
 {% assign tags = plugin.tags | default: store.tags %}
 {% assign versions = plugin.versions | default: store.versions %}
 {% assign image_url = plugin.image_url | default: store.image_url %}
+{% assign image_url = image_url | default: "assets/images/placeholder_screenshot.png" %}
 {% assign created = plugin.created | default: store.created %}
 {% assign updated = plugin.updated | default: store.updated %}
 
-<div class="card plugin my-1 text-white">
-  <a class="nostyle" href="{% if plugin.redirect %}{{ plugin.redirect }}{% else %}{{ plugin.url | relative_url }}{% endif %}">
+<div id="card-{{ name }}" class="card plugin my-2" data-bs-theme="dark">
+  <a class="nostyle" href="{% if plugin.redirect and plugin.project_url != null %}{{ plugin.project_url }}{% else %}{{ plugin.url | relative_url }}{% endif %}">
     <div class="row">
       <div class="col-3">
         <img class="img-fluid rounded-start object-fit-contain" src="{{ image_url }}" alt="{{ name }}">
@@ -74,7 +38,7 @@ a.nostyle:link, a.nostyle:visited {
             <span class="badge text-bg-danger">Requires root</span>
           {% endif %}
         </p>
-        <p class="card-text">
+        <p class="card-text">Tags: 
           {% for tag in tags %}
             <span class="badge text-bg-primary">{{ tag }}</span>
           {% endfor %}
