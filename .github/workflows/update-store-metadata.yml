@@ -100,9 +100,19 @@ jobs:
             echo 'project_url: ' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo category: Active >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo available_in_store: True >> "docs/_plugins/${{ matrix.plugin.name }}.md"
-            echo redirect: False >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo redirect: True >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo --- >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo '{\% assign store = site.data\[${{ matrix.plugin.name }}\] \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign store = site.data\[plugin.title\] \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign name = plugin.title | default: store.name \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign author = plugin.author | default: store.author \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign description = plugin.description | default: store.description \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign tags = plugin.tags | default: store.tags \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign versions = plugin.versions | default: store.versions \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign image_url = plugin.image_url | default: store.image_url \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign image_url = image_url | default: "assets/images/placeholder_screenshot.png" \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign created = plugin.created | default: store.created \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
+            echo '{\% assign updated = plugin.updated | default: store.updated \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo Generated new ${{ matrix.plugin.name }} page
           fi
       - name: Check cached AutoSuspend.json for changes

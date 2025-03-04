@@ -1,0 +1,18 @@
+---
+layout: plugin
+title: template
+project_url: 
+category: Active
+available_in_store: True
+redirect: True
+---
+{% assign store = site.data[plugin.title] %}
+{% assign name = plugin.title | default: store.name %}
+{% assign author = plugin.author | default: store.author %}
+{% assign description = plugin.description | default: store.description %}
+{% assign tags = plugin.tags | default: store.tags %}
+{% assign versions = plugin.versions | default: store.versions %}
+{% assign image_url = plugin.image_url | default: store.image_url %}
+{% assign image_url = image_url | default: "assets/images/placeholder_screenshot.png" %}
+{% assign created = plugin.created | default: store.created %}
+{% assign updated = plugin.updated | default: store.updated %}
