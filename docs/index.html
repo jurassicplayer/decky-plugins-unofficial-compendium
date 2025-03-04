@@ -3,6 +3,7 @@ layout: default
 title: plugins
 permalink: /
 description: Listing of Decky Plugins
+show_searchbar: true
 ---
 <!-- pages/plugins.md -->
 <div class="plugins">
@@ -10,7 +11,7 @@ description: Listing of Decky Plugins
   <!-- Display categorized plugins -->
   {% for category in site.display_categories %}
   {% assign categorized_plugins = site.plugins | where: "category", category %}
-  <div class="card mx-4 my-4 text-white">
+  <div class="card mx-4 my-4" data-bs-theme="dark">
     <div class="card-body" style="justify-content:center">
       <h2 id="{{ category }}" class="card-title">{{ category }}</h2>
       <!-- Generate cards for each project -->
