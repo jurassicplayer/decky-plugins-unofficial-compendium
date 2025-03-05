@@ -47,7 +47,7 @@ jobs:
           key: store.json
           path: docs/_data/store.json
       # END
-  update_or_create_pages:
+  update_store_data:
     needs: query_store
     runs-on: ubuntu-latest
     if: ${{ needs.query_store.outputs.isNew }}
@@ -152,9 +152,9 @@ jobs:
           
 
   create_pr:
-    needs: update_or_create_pages
+    needs: update_store_data
     runs-on: ubuntu-latest
-    if: ${{ needs.update_or_create_pages.outputs.isNew == 'true' || needs.update_or_create_pages.outputs.hasChanges == 'true' }}
+    if: ${{ needs.update_store_data.outputs.isNew == 'true' || needs.update_store_data.outputs.hasChanges == 'true' }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
