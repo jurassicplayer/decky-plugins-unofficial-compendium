@@ -198,7 +198,7 @@ jobs:
                 }
               })
               console.log(filelist)
-              return filelist
+              if (filelist) return filelist
             })
       - name: Set hasStale flag
         id: set_stale
