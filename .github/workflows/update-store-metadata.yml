@@ -130,6 +130,13 @@ jobs:
         if: ${{ steps.check_local.outputs.isNew || steps.check_cache.outputs.hasChanges }}
         run: |
           cat docs/_data/store.json | jq 'first (.[] | select( .name == "${{ matrix.plugin.name }}"))' > "docs/_data/${{ matrix.plugin.name }}.json"
+      - name: Update ${{ matrix.plugin.name }}.md (when re-introduced into the store)
+        if: ${{ steps.check_cache.outputs.hasChanges }}
+        run: |
+          sed -i 's/category: Inactive/category: Active/gI' "docs/_plugins/${{ matrix.plugin.name }}.md"
+          sed -i 's/category: Unmaintained/category: Active/gI' "docs/_plugins/${{ matrix.plugin.name }}.md"
+          sed -i 's/category: Abandoned/category: Active/gI' "docs/_plugins/${{ matrix.plugin.name }}.md"
+          sed -i 's/available_in_store: False/available_in_store: True/gI' "docs/_plugins/${{ matrix.plugin.name }}.md"
       - name: Upload ${{ matrix.plugin.name }}.json artifact
         if: ${{ steps.check_local.outputs.isNew || steps.check_cache.outputs.hasChanges }}
         uses: actions/upload-artifact@v4
