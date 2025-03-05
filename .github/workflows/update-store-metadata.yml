@@ -203,7 +203,7 @@ jobs:
             })
       - name: Set hasStale flag
         id: set_stale
-        if: ${{ steps.check_stale.outputs.result }}
+        if: ${{ steps.check_stale.outputs.result != [] }}
         run: echo "hasStale=true" >> $GITHUB_OUTPUT
       - name: Load stale plugins list
         id: set-matrix
