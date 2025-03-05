@@ -149,7 +149,82 @@ jobs:
         with:
           name: md-${{ matrix.plugin.name }}
           path: docs/_plugins/${{ matrix.plugin.name }}.md
-          
+  
+  query_local:
+    needs: query_store
+    runs-on: ubuntu-latest
+    if: ${{ needs.query_store.outputs.isNew == 'true' }}
+    outputs:
+      hasStale: ${{ steps.set_stale.outputs.hasStale }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      # - name: Download latest store.json artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: json-store
+      #     path: docs/_data/store.json
+      # START Remove cache when action/download-artifact isn't broken
+      - name: Un-Cache store artifact
+        uses: actions/cache@v4
+        with:
+          key: store.json
+          path: docs/_data/store.json
+      - name: Get stale list of plugins
+        id: check_stale
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            var fs = require("fs")
+            let storeFile = 'docs/_data/store.json'
+            let pluginDir = 'docs/_plugins'
+            fs.readdir(pluginDir, (err, files) => {
+              let store = JSON.parse(fs.readFileSync(storeFile, 'utf8'));
+              let filelist = []
+              files.forEach(file => {
+                let pluginFilename = file.replace(/\.[^/.]+$/, "")
+                let storeData = store.find(plugin => plugin.name == pluginFilename)
+                let pluginFile = `${pluginDir}/${file}`
+                if (! file.endsWith(".md")) return
+                if (storeData) return
+                let regex = new RegExp("available_in_store:( |)True", "i")
+                let inStore = regex.test(fs.readFileSync(pluginFile, 'utf8'))
+                if (inStore && !storeData) {
+                  filelist.push(pluginFilename)
+                }
+              })
+              console.log(filelist)
+              return filelist
+            })
+      - name: Set hasStale flag
+        id: set_stale
+        if: ${{ steps.check_stale.outputs.result }}
+        run: echo "hasStale=true" >> $GITHUB_OUTPUT
+      - name: Load stale plugins list
+        id: set-matrix
+        if: ${{ steps.set_stale.outputs.hasStale }}
+        run: echo "matrix=${{ steps.check_stale.outputs.result }}" >> $GITHUB_OUTPUT
+        
+
+  update_outdated_pages:
+    needs: query_local
+    runs-on: ubuntu-latest
+    if: ${{ needs.query_local.outputs.hasStale }}
+    strategy:
+      matrix:
+        plugin: ${{ fromJson(needs.query_local.outputs.matrix) }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Update outdated ${{ matrix.plugin }} page
+        run: echo ${{ matrix.plugin }}
+
 
   create_pr:
     needs: update_store_data
