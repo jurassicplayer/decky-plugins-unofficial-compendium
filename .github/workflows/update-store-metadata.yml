@@ -115,7 +115,7 @@ jobs:
             echo '{\% assign updated = page.updated | default: store.updated \%}' >> "docs/_plugins/${{ matrix.plugin.name }}.md"
             echo Generated new ${{ matrix.plugin.name }} page
           fi
-      - name: Check cached AutoSuspend.json for changes
+      - name: Check cached ${{ matrix.plugin.name }}.json for changes
         if: ${{ ! steps.check_local.outputs.isNew }}
         id: check_cache
         run: |
