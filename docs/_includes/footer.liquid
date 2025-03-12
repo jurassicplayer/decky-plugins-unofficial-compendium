@@ -1,32 +1,24 @@
-{% if site.footer_fixed %}
-  <footer class="fixed-bottom" role="contentinfo">
-    <div class="container mt-0">
-      &copy; Copyright {{ site.time | date: '%Y' }}
-      {{ site.first_name }}
-      {{ site.middle_name }}
-      {{ site.last_name }}. {{ site.footer_text }}
-      {% if site.impressum_path %}
-        <a href="{{ site.url }}{{ site.baseurl }}{{ site.impressum_path }}">Impressum</a>.
-      {% endif %}
-      {% if site.last_updated %}
-        Last updated: {{ 'now' | date: '%B %d, %Y' }}.
-      {% endif %}
+<footer class="mt-5" role="contentinfo">
+  <div class="bd-footer bg-body-tertiary pt-3 pb-3 px-5">
+    <div class="row justify-content-center">
+    <div class="col col-sm-1 col-lg-3 mb-2 flex-fill">
+      <h5 class="fw-bold"><a class="navbar-brand" href="{{ site.url }}"><img src="assets/images/steamdeck.svg" style="width:1.5em; height:1.5em;"/>Unofficial Compendium</a></h5>
+      <div class="text-wrap" style="font-size:xx-small; max-width: 45em;">© 2025 {{ site.maintainer }}. All rights reserved. All trademarks property of their respective owners in the U.S. and other countries. This project is not affiliated with Valve Corporation or Steam Deck Homebrew. Steam, the Steam logo, Steam Deck, and the Steam Deck logo are trademarks and/or registered trademarks of Valve Corporation in the U.S. and/or other countries.</div>
     </div>
-  </footer>
-{% else %}
-  <footer class="sticky-bottom mt-5" role="contentinfo">
-    <div class="container">
-      &copy; Copyright {{ site.time | date: '%Y' }}
-      {{ site.first_name }}
-      {{ site.middle_name }}
-      {{ site.last_name }}. {{ site.footer_text }}
-      {% if site.impressum_path %}
-        <a href="{{ site.url }}{{ site.baseurl }}{{ site.impressum_path }}">Impressum</a>.
-      {% endif %}
-      {% if site.last_updated %}
-        Last updated: {{ 'now' | date: '%B %d, %Y' }}.
-      {% endif %}
+    <div class="col col-sm-6 col-lg-3 mb-2 flex-fill">
+      <h5 class="fw-bold">Links</h5>
+      <ul class="list-unstyled">
+        <li><a class="text-decoration-none" href="{{ site.project_url }}">Github</a></li>
+        <li><a class="text-decoration-none" href="{{ site.project_url }}/issues">Issues</a></li>
+      </ul>
     </div>
-  </footer>
-{% endif %}
-
+    <div class="col col-sm-1 col-lg-3 mb-2 flex-fill">
+      <h5 class="fw-bold">Community</h5>
+      <ul class="list-unstyled">
+        <li><a class="text-decoration-none" href="https://decky.xyz/">Decky-Loader</a></li>
+        <li><a class="text-decoration-none" href="https://plugins.deckbrew.xyz/">Deckbrew</a></li>
+        <li><a class="text-decoration-none" href="https://deckbrew.xyz/discord">Discord</a></li>
+      </ul>
+    </div></div>
+  </div>
+</footer>
