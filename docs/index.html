@@ -13,7 +13,7 @@ show_searchbar: true
   {% assign categorized_plugins = site.plugins | where: "category", category %}
   <div class="card mx-4 my-4" data-bs-theme="dark">
     <div class="card-body" style="justify-content:center">
-      <h2 id="{{ category }}" class="card-title">{{ category }}</h2>
+      <h4 id="{{ category }}" class="card-title">{{ category }}</h4>
       <!-- Generate cards for each project -->
         {% for plugin in categorized_plugins %}
           {% include card.liquid %}
