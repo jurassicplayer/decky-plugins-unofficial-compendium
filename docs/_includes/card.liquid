@@ -24,7 +24,7 @@ a.nostyle:link, a.nostyle:visited {
 {% assign created = plugin.created | default: store.created %}
 {% assign updated = plugin.updated | default: store.updated %}
 
-<div id="card-{{ name }}" class="card plugin my-2" data-bs-theme="dark">
+<div id="card-{{ name }}" class="card plugin my-2">
   <a class="nostyle" href="{% if plugin.redirect and plugin.project_url != null %}{{ plugin.project_url }}{% else %}{{ plugin.url | relative_url }}{% endif %}">
     <div class="row">
       <div class="col-3">

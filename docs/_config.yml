@@ -1,4 +1,7 @@
 url: https://jurassicplayer.github.io/decky-plugins-unofficial-compendium
+project_url: https://github.com/jurassicplayer/decky-plugins-unofficial-compendium
+maintainer: jurassicplayer
+
 enable_project_categories: true # enables categorization of projects into multiple categories
 
 display_categories: [Active, Inactive, Unmaintained, Abandoned]
