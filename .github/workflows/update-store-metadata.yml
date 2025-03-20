@@ -55,7 +55,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Download latest store.json artifact
-        uses: actions/download-artifact@4.2.1
+        uses: actions/download-artifact@v4.2.1
         with:
           name: json-store
           path: docs/_data/store.json
@@ -129,12 +129,12 @@ jobs:
         with:
           persist-credentials: false
       - name: Download plugin page artifacts
-        uses: actions/download-artifact@4.2.1
+        uses: actions/download-artifact@v4.2.1
         with:
           pattern: md-*
           path: docs/_plugins
       - name: Download json artifacts
-        uses: actions/download-artifact@4.2.1
+        uses: actions/download-artifact@v4.2.1
         with:
           pattern: json-*
           path: docs/_data
