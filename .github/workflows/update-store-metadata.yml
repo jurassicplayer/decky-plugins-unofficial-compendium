@@ -39,14 +39,6 @@ jobs:
         with:
           name: json-store
           path: docs/_data/store.json
-      # START Remove cache when action/download-artifact isn't broken
-      - name: Cache store artifact
-        if: ${{ steps.compare.outputs.isNew }}
-        uses: actions/cache@v4
-        with:
-          key: store.json
-          path: docs/_data/store.json
-      # END
   update_or_create_pages:
     needs: query_store
     runs-on: ubuntu-latest
@@ -67,23 +59,6 @@ jobs:
         with:
           name: json-store
           path: docs/_data/store.json
-      # START Remove cache when action/download-artifact isn't broken
-      - name: Un-Cache store artifact
-        uses: actions/cache@v4
-        with:
-          key: store.json
-          path: docs/_data/store.json
-      - name: Load Cache - Plugin page artifacts
-        uses: actions/cache@v4
-        with:
-          key: plugins
-          path: docs/_plugins/*.md
-      - name: Load Cache - Cached page artifacts
-        uses: actions/cache@v4
-        with:
-          key: data
-          path: docs/_data/*.json
-      # END
       - name: Check local for ${{ matrix.plugin.name }} page
         id: check_local
         run: |
@@ -153,28 +128,16 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
-      # START Remove cache when action/download-artifact isn't broken
-      - name: Load Cache - Plugin page artifacts
-        uses: actions/cache@v4
+      - name: Download plugin page artifacts
+        uses: actions/download-artifact@v4
         with:
-          key: plugins
-          path: docs/_plugins/*.md
-      - name: Load Cache - Cached page artifacts
-        uses: actions/cache@v4
+          pattern: md-*
+          path: docs/_plugins
+      - name: Download json artifacts
+        uses: actions/download-artifact@v4
         with:
-          key: data
-          path: docs/_data/*.json
-      # END
-      # - name: Download plugin page artifacts
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     pattern: md-*
-      #     path: docs/_plugins
-      # - name: Download json artifacts
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     pattern: json-*
-      #     path: docs/_data
+          pattern: json-*
+          path: docs/_data
       - name: List files
         run: |
           ls -la docs/_plugins
